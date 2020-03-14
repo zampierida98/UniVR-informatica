@@ -1,0 +1,85 @@
+.model CONTATORE
+.inputs START
+.outputs END0 END1 END2
+
+
+# inizializzazione delle costanti
+.names ZERO
+.subckt	COSTANTE O2=C02 O1=C01 O0=C00
+.subckt	COSTANTE1 O2=C12 O1=C11 O0=C10
+.subckt	COSTANTE2 O2=C22 O1=C21 O0=C20
+.subckt	COSTANTE3 O2=C32 O1=C31 O0=C30
+.subckt	COSTANTE4 O2=C42 O1=C41 O0=C40
+
+
+# multiplexer che seleziona tra 0 e il valore corrente del contatore
+.subckt MUX3 X=START a2=S2 a1=S1 a0=S0 b2=C02 b1=C01 b0=C00 o2=M2 o1=M1 o0=M0
+
+
+# registro che memorizza il valore del contatore
+.subckt REGISTRO3 A2=M2 A1=M1 A0=M0 O2=R2 O1=R1 O0=R0
+
+
+# sommatore che incrementa di 1
+.subckt SOMMATORE3 A2=R2 A1=R1 A0=R0 B2=C12 B1=C11 B0=C10 CIN=ZERO O2=S2 O1=S1 O0=S0
+
+
+# comparatori
+
+# uguale a 2
+.subckt UGUALE3 A2=R2 A1=R1 A0=R0 B2=C22 B1=C21 B0=C20 O=END0
+
+# uguale a 3
+.subckt UGUALE3 A2=R2 A1=R1 A0=R0 B2=C32 B1=C31 B0=C30 O=END1
+
+# uguale a 4
+.subckt UGUALE3 A2=R2 A1=R1 A0=R0 B2=C42 B1=C41 B0=C40 O=END2
+
+
+.search mux3.blif
+.search registro3.blif
+.search sommatore3.blif
+.search uguale3.blif
+.end
+
+
+# definizione delle costanti
+.model COSTANTE
+.outputs O2 O1 O0
+.names O2
+.names O1
+.names O0
+.end
+
+.model COSTANTE1
+.outputs O2 O1 O0
+.names O2
+.names O1
+.names O0
+1
+.end
+
+.model COSTANTE2
+.outputs O2 O1 O0
+.names O2
+.names O1
+1
+.names O0
+.end
+
+.model COSTANTE3
+.outputs O2 O1 O0
+.names O2
+.names O1
+1
+.names O0
+1
+.end
+
+.model COSTANTE4
+.outputs O2 O1 O0
+.names O2
+1
+.names O1
+.names O0
+.end

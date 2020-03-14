@@ -1,0 +1,17 @@
+.model SOMMATORE10
+.inputs a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 b0 b1 b2 b3 b4 b5 b6 b7 b8 b9 CIN
+.outputs o0 o1 o2 o3 o4 o5 o6 o7 o8 o9 COUT
+
+.subckt SOMMATORE1 A=a9 B=b9 CIN=CIN O=o9 COUT=c0
+.subckt SOMMATORE1 A=a8 B=b8 CIN=c0 O=o8 COUT=c1
+.subckt SOMMATORE1 A=a7 B=b7 CIN=c1 O=o7 COUT=c2
+.subckt SOMMATORE1 A=a6 B=b6 CIN=c2 O=o6 COUT=c3
+.subckt SOMMATORE1 A=a5 B=b5 CIN=c3 O=o5 COUT=c4
+.subckt SOMMATORE1 A=a4 B=b4 CIN=c4 O=o4 COUT=c5
+.subckt SOMMATORE1 A=a3 B=b3 CIN=c5 O=o3 COUT=c6
+.subckt SOMMATORE1 A=a2 B=b2 CIN=c6 O=o2 COUT=c7
+.subckt SOMMATORE1 A=a1 B=b1 CIN=c7 O=o1 COUT=c8
+.subckt SOMMATORE1 A=a0 B=b0 CIN=c8 O=o0 COUT=COUT
+
+.search sommatore1.blif
+.end

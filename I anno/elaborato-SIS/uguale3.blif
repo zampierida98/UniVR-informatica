@@ -1,0 +1,13 @@
+.model UGUALE3
+.inputs A2 A1 A0 B2 B1 B0
+.outputs O
+
+.subckt xnor A=A2 B=B2 X=X2
+.subckt xnor A=A1 B=B1 X=X1
+.subckt xnor A=A0 B=B0 X=X0
+
+.names X2 X1 X0 O
+111 1
+
+.search xnor.blif
+.end

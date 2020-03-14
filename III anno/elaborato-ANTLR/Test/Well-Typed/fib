@@ -1,0 +1,17 @@
+n = 10;
+
+if (n <= 1) then {
+    out(n)
+}
+else {
+    fib = 1;
+    prev = 1;
+
+    for (i = 2; i < n; i = i + 1) {
+            temp = fib;
+	    fib = fib + prev;
+	    prev = temp
+    }
+};
+
+out(fib)

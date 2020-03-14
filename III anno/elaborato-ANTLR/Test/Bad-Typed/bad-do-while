@@ -1,0 +1,3 @@
+do {
+    skip
+} while (1)

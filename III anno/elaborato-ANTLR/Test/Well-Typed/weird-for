@@ -1,0 +1,9 @@
+for (n = 0; n < 10;
+    for (n = n - 1; n < 10; n = n + 2) {
+        skip
+    };
+    n = n - 1) {
+
+    out(n);
+    n = n + 1
+}

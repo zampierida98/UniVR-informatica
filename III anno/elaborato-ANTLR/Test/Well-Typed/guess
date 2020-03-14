@@ -1,0 +1,10 @@
+g = 3;
+attempt = 0;
+
+do {
+    attempt = attempt + 1;
+    nd(x = 0, nd(x = 1, nd(x = 2, nd(x = 3, nd(x = 4, x = 5)))));
+    out(x)
+} while (x != g);
+
+out(attempt)

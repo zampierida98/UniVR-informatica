@@ -1,0 +1,89 @@
+.model CONTROLLO
+.inputs RES_GEN IN_IW IN_ID COD0 COD1 COD2 END0 END1 END2
+.outputs INT_GEN OUT_IW OUT_ID FASCIA0 FASCIA1 START
+
+.start_kiss
+
+.i 9
+.o 6
+.s 3
+.r SPENTO
+.p 46
+
+# inputs stato_corrente stato_prossimo outputs
+
+# (1) fintanto che l'utente non mette RES_GEN a 1 il sistema rimane SPENTO
+0-------- SPENTO SPENTO 000000
+
+# (2) se l'utente mette RES_GEN a 1 e la codifica della fascia non corrisponde a 11, il sistema passa da SPENTO a ACCESO
+1--1----- SPENTO ACCESO 111000
+1--01---- SPENTO ACCESO 111010
+1--001--- SPENTO ACCESO 111100
+
+# (3) se l'utente mette RES_GEN a 1 e la codifica della fascia corrisponde a 11, il sistema passa da SPENTO a OVERLOAD e inizia a contare
+1--000--- SPENTO OL 111111
+
+# (4) se il sistema e' ACCESO e la codifica della fascia non corrisponde a 11, il sistema rimane ACCESO
+-111----- ACCESO ACCESO 111000
+-1101---- ACCESO ACCESO 111010
+-11001--- ACCESO ACCESO 111100
+
+-101----- ACCESO ACCESO 110000
+-1001---- ACCESO ACCESO 110010
+-10001--- ACCESO ACCESO 110100
+
+-011----- ACCESO ACCESO 101000
+-0101---- ACCESO ACCESO 101010
+-01001--- ACCESO ACCESO 101100
+
+-001----- ACCESO ACCESO 100000
+-0001---- ACCESO ACCESO 100010
+-00001--- ACCESO ACCESO 100100
+
+# (5) se il sistema e' ACCESO e la codifica della fascia corrisponde a 11, il sistema passa da ACCESO a OVERLOAD e inizia a contare
+-11000--- ACCESO OL 111111
+
+-10000--- ACCESO OL 110111
+
+-01000--- ACCESO OL 101111
+
+-00000--- ACCESO OL 100111
+
+# (6) se il sistema e' in OVERLOAD e, in qualsiasi momento, la codifica della fascia non corrisponde piu' a 11, il sistema ritorna ACCESO
+-111----- OL ACCESO 111000
+-1101---- OL ACCESO 111010
+-11001--- OL ACCESO 111100
+
+-101----- OL ACCESO 110000
+-1001---- OL ACCESO 110010
+-10001--- OL ACCESO 110100
+
+-011----- OL ACCESO 101000
+-0101---- OL ACCESO 101010
+-01001--- OL ACCESO 101100
+
+-001----- OL ACCESO 100000
+-0001---- OL ACCESO 100010
+-00001--- OL ACCESO 100100
+
+# (7) se il sistema e' in OVERLOAD e la codifica della fascia corrisponde ancora a 11, il sistema rimane in OVERLOAD e spegne mano a mano INT_DW, INT_WM e infine INT_GEN (ritornando SPENTO)
+-11000000 OL OL 111110
+-10000000 OL OL 110110
+-01000000 OL OL 101110
+-00000000 OL OL 100110
+
+-110001-- OL OL 110110
+-100001-- OL OL 110110
+-010001-- OL OL 100110
+-000001-- OL OL 100110
+
+-1100001- OL OL 101110
+-1000001- OL OL 100110
+-0100001- OL OL 101110
+-0000001- OL OL 100110
+
+---000001 OL SPENTO 000000
+
+.end_kiss
+
+.end

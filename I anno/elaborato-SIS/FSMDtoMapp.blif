@@ -1,0 +1,381 @@
+.model FSMD
+.inputs RG RW RD L0 L1 L2 L3 L4 L5 L6 L7 L8 L9
+.outputs IG IW ID TH0 TH1
+.latch    [58] LatchOut_v9   1
+.latch    [59] LatchOut_v10   1
+.latch    M2 R2 re NIL 0
+.latch    M1 R1 re NIL 0
+.latch    M0 R0 re NIL 0
+.latch    IW IWM re NIL 1
+.latch    ID IDW re NIL 1
+.names [58] IG
+0 1
+.names [58] LatchOut_v9 R0 [1771] [1809] IW
+01--- 1
+---11 1
+0-01- 1
+.names [58] LatchOut_v9 R0 [1772] [1809] ID
+01--- 1
+---11 1
+0-11- 1
+.names [58] [74] TH0
+00 1
+.names TH0 [58] [544] SOMME2 SOMME5 [1770] [1796] [1801] TH1
+1-1----- 1
+00-----1 1
+00-1--1- 1
+00-111-- 1
+.names RG LatchOut_v9 LatchOut_v10 [1811] st
+--01 1
+11-1 1
+.names RG LatchOut_v9 R2 M1 M0 [1811] [58]
+01---- 1
+--1011 1
+.names SOMME0 SOMME2 SOMME3 SOMME5 [1796] [1801] [74]
+-----0 1
+00--0- 1
+0000-- 1
+.names [58] [1811] [59]
+1- 1
+-1 1
+.names SOMME0 SOMME1 SOMME2 SOMME3 SOMME4 [1798] [544]
+1----- 1
+-1111- 1
+-111-1 1
+.names st R2 R1 R0 M0 [1780] M2
+-1--1- 1
+010--- 1
+0--1-0 1
+.names st R1 M0 M1
+-11 1
+000 1
+.names st R0 M0
+00 1
+.names [1776] [1822] SOMME0
+1- 1
+-0 1
+.names SOMME2 tmp82 [468] [1781] SOMME1
+--01 1
+010- 1
+.names tmp82 [1812] SOMME2
+11 1
+00 1
+.names tmp83 [474] SOMME3
+01 1
+10 1
+.names SOMME5 tmp85 [474] [475] SOMME4
+--01 1
+01-0 1
+.names tmp85 [1813] SOMME5
+11 1
+00 1
+.names L4 [1772] NEW_LOAD4
+11 1
+.names L5 [1771] NEW_LOAD5
+11 1
+.names L0 [334] [333] tmp22
+1-1 1
+-11 1
+.names L2 [338] [1814] [334]
+-1- 1
+1-1 1
+.names L0 L2 [333]
+01 1
+10 1
+.names [334] [335] tmp24
+01 1
+.names L1 [337] [335]
+01 1
+10 1
+.names L0 L1 L2 [338]
+011 1
+101 1
+.names L1 L2 [333] [337]
+01- 1
+1-0 1
+.names L1 [333] [337] [339]
+01- 1
+1-1 1
+.names L0 tmp22 [352] tmp31
+10- 1
+-11 1
+.names L3 [356] [1815] [352]
+-1- 1
+1-1 1
+.names [352] [353] [356] [1779] [1815] tmp33
+-10-- 1
+1--01 1
+.names [333] [1785] [353]
+11 1
+00 1
+.names [339] tmp36 [356]
+10 1
+.names L3 tmp24 [355]
+01 1
+10 1
+.names [356] [1782] tmp35
+01 1
+.names [339] [1816] tmp36
+11 1
+00 1
+.names tmp31 [370] tmp40
+11 1
+.names NEW_LOAD4 [1817] [370]
+11 1
+.names [370] [371] [373] tmp42
+01- 1
+100 1
+.names [352] [1786] [371]
+11 1
+00 1
+.names tmp35 [1779] [1799] [374]
+110 1
+.names NEW_LOAD4 tmp33 [373]
+01 1
+10 1
+.names tmp35 [374] [1779] [1799] tmp44
+-01- 1
+10-0 1
+.names [1774] [1787] [388]
+11 1
+.names [388] [1774] [1787] tmp51
+01- 1
+0-1 1
+.names [394] [1788] [392]
+11 1
+.names NEW_LOAD5 tmp42 [391]
+01 1
+10 1
+.names NEW_LOAD5 [1818] [394]
+11 1
+.names [392] [394] [1788] tmp53
+01- 1
+-01 1
+.names [394] [395] [398] [397] tmp54
+01-- 1
+--11 1
+10-0 1
+.names NEW_LOAD5 tmp44 [395]
+01 1
+10 1
+.names [400] [1789] [398]
+11 1
+.names [1777] [1799] [397]
+11 1
+00 1
+.names NEW_LOAD5 [1790] [400]
+11 1
+.names [398] [400] [1789] tmp56
+01- 1
+-01 1
+.names NEW_LOAD5 [400] [1790] [401]
+10- 1
+-01 1
+.names [1778] [1806] tmp60
+1- 1
+-0 1
+.names tmp53 [414] [1783] [410]
+111 1
+.names tmp53 [410] [414] [1783] tmp62
+-0-1 1
+101- 1
+.names L6 tmp54 [1802] [414]
+111 1
+.names L6 tmp54 [414] tmp65 [417] tmp64
+-10-- 1
+1-00- 1
+1-0-0 1
+.names L6 tmp56 [417] [1802] tmp65
+---0 1
+0-1- 1
+110- 1
+.names [397] [1791] [417]
+11 1
+00 1
+.names tmp60 tmp71 [1805] tmp70
+1-- 1
+-00 1
+.names [1773] [1805] tmp71
+01 1
+10 1
+.names [434] [1792] [432]
+11 1
+.names L7 tmp74 [435] [434]
+-01 1
+1-0 1
+.names [432] [434] [1792] tmp73
+01- 1
+-01 1
+.names [435] [1820] tmp74
+11 1
+00 1
+.names L7 tmp64 [435]
+01 1
+10 1
+.names L7 [1793] [438]
+11 1
+.names L7 [438] [1793] [439]
+10- 1
+-01 1
+.names tmp73 tmp83 [1784] [450]
+101 1
+.names tmp73 [450] tmp83 [1784] tmp82
+-0-1 1
+100- 1
+.names tmp73 [1821] tmp83
+11 1
+00 1
+.names L8 [439] [457] tmp86 [456]
+1-0- 1
+-1-0 1
+.names [439] [456] [457] tmp86 tmp85
+-01- 1
+1-00 1
+.names [438] [1794] [457]
+11 1
+00 1
+.names [439] [1803] tmp86
+11 1
+00 1
+.names SOMME2 tmp82 [1781] [468]
+011 1
+.names L9 SOMME5 tmp85 [475] [474]
+-01- 1
+1--0 1
+.names [456] [1795] [475]
+11 1
+00 1
+.names L9 tmp86 [1770]
+01 1
+10 1
+.names RW IWM [1771]
+1- 1
+-1 1
+.names RD IDW [1772]
+1- 1
+-1 1
+.names tmp51 [410] [1806] [1773]
+--0 1
+00- 1
+.names tmp31 [370] [1774]
+01 1
+10 1
+.names tmp70 [468] [1776]
+1- 1
+-1 1
+.names NEW_LOAD5 tmp35 [1777]
+01 1
+10 1
+.names tmp40 [388] [1778]
+1- 1
+-1 1
+.names [356] [355] [1779]
+01 1
+.names R2 R1 [1780]
+1- 1
+-0 1
+.names tmp71 [450] [1781]
+01 1
+10 1
+.names [338] [337] [1782]
+01 1
+10 1
+.names [392] [391] [1783]
+01 1
+10 1
+.names tmp62 [432] [1784]
+01 1
+10 1
+.names L3 [334] [1785]
+11 1
+00 1
+.names NEW_LOAD4 tmp22 [1786]
+11 1
+00 1
+.names NEW_LOAD5 [392] [391] [1787]
+-1- 1
+1-0 1
+.names [374] [373] [1788]
+1- 1
+-1 1
+.names NEW_LOAD4 tmp36 [1789]
+01 1
+10 1
+.names L1 L3 [1790]
+01 1
+10 1
+.names L6 [398] [1791]
+11 1
+00 1
+.names tmp53 [414] [1792]
+01 1
+10 1
+.names L6 tmp56 [1793]
+01 1
+10 1
+.names L8 tmp65 [1794]
+11 1
+00 1
+.names L9 tmp74 [1795]
+11 1
+00 1
+.names SOMME3 SOMME4 [1796]
+1- 1
+-1 1
+.names L8 SOMME5 [401] [1803] [1798]
+-1-- 1
+1--1 1
+--11 1
+.names NEW_LOAD4 tmp36 [1799]
+0- 1
+-0 1
+.names SOMME0 SOMME1 [1801]
+1- 1
+-1 1
+.names tmp56 [417] [1802]
+1- 1
+-0 1
+.names L8 [401] [1803]
+0- 1
+-0 1
+.names tmp62 [432] [1805]
+0- 1
+-0 1
+.names tmp51 [410] [1806]
+0- 1
+-0 1
+.names [58] LatchOut_v10 [59] [1780] [1809]
+-0-- 1
+--0- 1
+0--1 1
+.names [544] [1811]
+1 1
+.names tmp83 [474] [1812]
+0- 1
+-0 1
+.names L9 tmp86 [1813]
+0- 1
+-0 1
+.names [335] [1814]
+0 1
+.names [353] [1815]
+0 1
+.names L1 L3 [1816]
+0- 1
+-0 1
+.names [371] [373] [1817]
+0- 1
+-0 1
+.names [395] [397] [1818]
+0- 1
+-0 1
+.names tmp65 [438] [1820]
+0- 1
+-0 1
+.names tmp74 [456] [1821]
+0- 1
+-0 1
+.names tmp71 [450] [1822]
+0- 1
+-0 1
+.end

@@ -1,0 +1,29 @@
+.model MAGGIORE10
+.inputs A9 A8 A7 A6 A5 A4 A3 A2 A1 A0 B9 B8 B7 B6 B5 B4 B3 B2 B1 B0
+.outputs AgtB
+
+.subckt xor A=A9 B=B9 X=X9
+.subckt xor A=A8 B=B8 X=X8
+.subckt xor A=A7 B=B7 X=X7
+.subckt xor A=A6 B=B6 X=X6
+.subckt xor A=A5 B=B5 X=X5
+.subckt xor A=A4 B=B4 X=X4
+.subckt xor A=A3 B=B3 X=X3
+.subckt xor A=A2 B=B2 X=X2
+.subckt xor A=A1 B=B1 X=X1
+.subckt xor A=A0 B=B0 X=X0
+
+.names A9 A8 A7 A6 A5 A4 A3 A2 A1 A0 X9 X8 X7 X6 X5 X4 X3 X2 X1 X0 AgtB
+1---------1--------- 1
+-1--------01-------- 1
+--1-------001------- 1
+---1------0001------ 1
+----1-----00001----- 1
+-----1----000001---- 1
+------1---0000001--- 1
+-------1--00000001-- 1
+--------1-000000001- 1
+---------10000000001 1
+
+.search xor.blif
+.end

@@ -1,0 +1,13 @@
+.model FSMD
+.inputs RG RW RD L0 L1 L2 L3 L4 L5 L6 L7 L8 L9
+.outputs IG IW ID TH0 TH1
+
+# unita' di controllo
+.subckt CONTROLLO RES_GEN=RG IN_IW=new_iw IN_ID=new_id COD0=cd0 COD1=cd1 COD2=cd2 END0=en0 END1=en1 END2=en2 INT_GEN=IG OUT_IW=IW OUT_ID=ID FASCIA0=TH0 FASCIA1=TH1 START=st
+
+# unita' di elaborazione
+.subckt ELABORAZIONE RESW=RW RESD=RD INTW=IW INTD=ID LO0=L0 LO1=L1 LO2=L2 LO3=L3 LO4=L4 LO5=L5 LO6=L6 LO7=L7 LO8=L8 LO9=L9 S=st C0=cd0 C1=cd1 C2=cd2 NIW=new_iw NID=new_id E0=en0 E1=en1 E2=en2
+
+.search fsmMin.blif
+.search elaborazione.blif
+.end

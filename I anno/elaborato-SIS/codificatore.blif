@@ -1,0 +1,349 @@
+.model CODIFICATORE
+.inputs RES_WM RES_DW INT_WM INT_DW LOAD0 LOAD1 LOAD2 LOAD3 LOAD4 LOAD5 LOAD6 LOAD7 LOAD8 LOAD9
+.outputs COD0 COD1 COD2 NEW_IWM NEW_IDW
+
+
+# inizializzazione delle costanti
+.names ZERO
+.names UNO
+1
+.subckt COSTANTE0 k0=k0 k1=k1 k2=k2 k3=k3 k4=k4 k5=k5 k6=k6 k7=k7 k8=k8 k9=k9
+.subckt FORNO ov0=ov0 ov1=ov1 ov2=ov2 ov3=ov3 ov4=ov4 ov5=ov5 ov6=ov6 ov7=ov7 ov8=ov8 ov9=ov9
+.subckt FRIGO f0=f0 f1=f1 f2=f2 f3=f3 f4=f4 f5=f5 f6=f6 f7=f7 f8=f8 f9=f9
+.subckt ASPIRAPOLVERE as0=as0 as1=as1 as2=as2 as3=as3 as4=as4 as5=as5 as6=as6 as7=as7 as8=as8 as9=as9
+.subckt PHON p0=p0 p1=p1 p2=p2 p3=p3 p4=p4 p5=p5 p6=p6 p7=p7 p8=p8 p9=p9
+.subckt LAVASTOVIGLIE dw0=dw0 dw1=dw1 dw2=dw2 dw3=dw3 dw4=dw4 dw5=dw5 dw6=dw6 dw7=dw7 dw8=dw8 dw9=dw9
+.subckt LAVATRICE wm0=wm0 wm1=wm1 wm2=wm2 wm3=wm3 wm4=wm4 wm5=wm5 wm6=wm6 wm7=wm7 wm8=wm8 wm9=wm9
+.subckt LAMP6 l0=l0 l1=l1 l2=l2 l3=l3 l4=l4 l5=l5 l6=l6 l7=l7 l8=l8 l9=l9
+.subckt LAMP10 lm0=lm0 lm1=lm1 lm2=lm2 lm3=lm3 lm4=lm4 lm5=lm5 lm6=lm6 lm7=lm7 lm8=lm8 lm9=lm9
+.subckt HIFI h0=h0 h1=h1 h2=h2 h3=h3 h4=h4 h5=h5 h6=h6 h7=h7 h8=h8 h9=h9
+.subckt TV t0=t0 t1=t1 t2=t2 t3=t3 t4=t4 t5=t5 t6=t6 t7=t7 t8=t8 t9=t9
+.subckt COSTANTE150 x0=x0 x1=x1 x2=x2 x3=x3 x4=x4 x5=x5 x6=x6 x7=x7 x8=x8 x9=x9
+.subckt COSTANTE300 y0=y0 y1=y1 y2=y2 y3=y3 y4=y4 y5=y5 y6=y6 y7=y7 y8=y8 y9=y9
+.subckt COSTANTE450 z0=z0 z1=z1 z2=z2 z3=z3 z4=z4 z5=z5 z6=z6 z7=z7 z8=z8 z9=z9
+
+
+# multiplexer che restituiscono il valore degli interruttori in base ai reset
+.subckt REGISTRO1 A=INT_WM O=IWM
+.subckt MUX4IN1 s0=IWM s1=RES_WM i0=ZERO i1=UNO i2=UNO i3=UNO out=NEW_IWM
+
+.subckt REGISTRO1 A=INT_DW O=IDW
+.subckt MUX4IN1 s0=IDW s1=RES_DW i0=ZERO i1=UNO i2=UNO i3=UNO out=NEW_IDW
+
+
+# multiplexer
+# NOTA: la lavastoviglie e la lavatrice hanno un ulteriore multiplexer che restituisce un nuovo segnale di load in base al valore dell'interruttore corrispondente
+.subckt MUX10 X=LOAD0 a0=k0 a1=k1 a2=k2 a3=k3 a4=k4 a5=k5 a6=k6 a7=k7 a8=k8 a9=k9 b0=ov0 b1=ov1 b2=ov2 b3=ov3 b4=ov4 b5=ov5 b6=ov6 b7=ov7 b8=ov8 b9=ov9 o0=oov0 o1=oov1 o2=oov2 o3=oov3 o4=oov4 o5=oov5 o6=oov6 o7=oov7 o8=oov8 o9=oov9
+
+.subckt MUX10 X=LOAD1 a0=k0 a1=k1 a2=k2 a3=k3 a4=k4 a5=k5 a6=k6 a7=k7 a8=k8 a9=k9 b0=f0 b1=f1 b2=f2 b3=f3 b4=f4 b5=f5 b6=f6 b7=f7 b8=f8 b9=f9 o0=of0 o1=of1 o2=of2 o3=of3 o4=of4 o5=of5 o6=of6 o7=of7 o8=of8 o9=of9
+
+.subckt MUX10 X=LOAD2 a0=k0 a1=k1 a2=k2 a3=k3 a4=k4 a5=k5 a6=k6 a7=k7 a8=k8 a9=k9 b0=as0 b1=as1 b2=as2 b3=as3 b4=as4 b5=as5 b6=as6 b7=as7 b8=as8 b9=as9 o0=oas0 o1=oas1 o2=oas2 o3=oas3 o4=oas4 o5=oas5 o6=oas6 o7=oas7 o8=oas8 o9=oas9
+
+.subckt MUX10 X=LOAD3 a0=k0 a1=k1 a2=k2 a3=k3 a4=k4 a5=k5 a6=k6 a7=k7 a8=k8 a9=k9 b0=p0 b1=p1 b2=p2 b3=p3 b4=p4 b5=p5 b6=p6 b7=p7 b8=p8 b9=p9 o0=op0 o1=op1 o2=op2 o3=op3 o4=op4 o5=op5 o6=op6 o7=op7 o8=op8 o9=op9
+
+.subckt MUX4IN1 s0=LOAD4 s1=NEW_IDW i0=ZERO i1=ZERO i2=ZERO i3=UNO out=NEW_LOAD4
+.subckt MUX10 X=NEW_LOAD4 a0=k0 a1=k1 a2=k2 a3=k3 a4=k4 a5=k5 a6=k6 a7=k7 a8=k8 a9=k9 b0=dw0 b1=dw1 b2=dw2 b3=dw3 b4=dw4 b5=dw5 b6=dw6 b7=dw7 b8=dw8 b9=dw9 o0=odw0 o1=odw1 o2=odw2 o3=odw3 o4=odw4 o5=odw5 o6=odw6 o7=odw7 o8=odw8 o9=odw9
+
+.subckt MUX4IN1 s0=LOAD5 s1=NEW_IWM i0=ZERO i1=ZERO i2=ZERO i3=UNO out=NEW_LOAD5
+.subckt MUX10 X=NEW_LOAD5 a0=k0 a1=k1 a2=k2 a3=k3 a4=k4 a5=k5 a6=k6 a7=k7 a8=k8 a9=k9 b0=wm0 b1=wm1 b2=wm2 b3=wm3 b4=wm4 b5=wm5 b6=wm6 b7=wm7 b8=wm8 b9=wm9 o0=owm0 o1=owm1 o2=owm2 o3=owm3 o4=owm4 o5=owm5 o6=owm6 o7=owm7 o8=owm8 o9=owm9
+
+.subckt MUX10 X=LOAD6 a0=k0 a1=k1 a2=k2 a3=k3 a4=k4 a5=k5 a6=k6 a7=k7 a8=k8 a9=k9 b0=l0 b1=l1 b2=l2 b3=l3 b4=l4 b5=l5 b6=l6 b7=l7 b8=l8 b9=l9 o0=ol0 o1=ol1 o2=ol2 o3=ol3 o4=ol4 o5=ol5 o6=ol6 o7=ol7 o8=ol8 o9=ol9
+
+.subckt MUX10 X=LOAD7 a0=k0 a1=k1 a2=k2 a3=k3 a4=k4 a5=k5 a6=k6 a7=k7 a8=k8 a9=k9 b0=lm0 b1=lm1 b2=lm2 b3=lm3 b4=lm4 b5=lm5 b6=lm6 b7=lm7 b8=lm8 b9=lm9 o0=olm0 o1=olm1 o2=olm2 o3=olm3 o4=olm4 o5=olm5 o6=olm6 o7=olm7 o8=olm8 o9=olm9
+
+.subckt MUX10 X=LOAD8 a0=k0 a1=k1 a2=k2 a3=k3 a4=k4 a5=k5 a6=k6 a7=k7 a8=k8 a9=k9 b0=h0 b1=h1 b2=h2 b3=h3 b4=h4 b5=h5 b6=h6 b7=h7 b8=h8 b9=h9 o0=oh0 o1=oh1 o2=oh2 o3=oh3 o4=oh4 o5=oh5 o6=oh6 o7=oh7 o8=oh8 o9=oh9
+
+.subckt MUX10 X=LOAD9 a0=k0 a1=k1 a2=k2 a3=k3 a4=k4 a5=k5 a6=k6 a7=k7 a8=k8 a9=k9 b0=t0 b1=t1 b2=t2 b3=t3 b4=t4 b5=t5 b6=t6 b7=t7 b8=t8 b9=t9 o0=ot0 o1=ot1 o2=ot2 o3=ot3 o4=ot4 o5=ot5 o6=ot6 o7=ot7 o8=ot8 o9=ot9
+
+
+# sommatori
+
+# forno + frigo
+.subckt SOMMATORE10 a0=oov0 a1=oov1 a2=oov2 a3=oov3 a4=oov4 a5=oov5 a6=oov6 a7=oov7 a8=oov8 a9=oov9 b0=of0 b1=of1 b2=of2 b3=of3 b4=of4 b5=of5 b6=of6 b7=of7 b8=of8 b9=of9 o0=tmp10 o1=tmp11 o2=tmp12 o3=tmp13 o4=tmp14 o5=tmp15 o6=tmp16 o7=tmp17 o8=tmp18 o9=tmp19 CIN=ZERO
+
+# sommatore1 + aspirapolvere
+.subckt SOMMATORE10 a0=tmp10 a1=tmp11 a2=tmp12 a3=tmp13 a4=tmp14 a5=tmp15 a6=tmp16 a7=tmp17 a8=tmp18 a9=tmp19 b0=oas0 b1=oas1 b2=oas2 b3=oas3 b4=oas4 b5=oas5 b6=oas6 b7=oas7 b8=oas8 b9=oas9 o0=tmp20 o1=tmp21 o2=tmp22 o3=tmp23 o4=tmp24 o5=tmp25 o6=tmp26 o7=tmp27 o8=tmp28 o9=tmp29 CIN=ZERO
+
+# sommatore2 + phon
+.subckt SOMMATORE10 a0=tmp20 a1=tmp21 a2=tmp22 a3=tmp23 a4=tmp24 a5=tmp25 a6=tmp26 a7=tmp27 a8=tmp28 a9=tmp29 b0=op0 b1=op1 b2=op2 b3=op3 b4=op4 b5=op5 b6=op6 b7=op7 b8=op8 b9=op9 o0=tmp30 o1=tmp31 o2=tmp32 o3=tmp33 o4=tmp34 o5=tmp35 o6=tmp36 o7=tmp37 o8=tmp38 o9=tmp39 CIN=ZERO
+
+# sommatore3 + lavastoviglie
+.subckt SOMMATORE10 a0=tmp30 a1=tmp31 a2=tmp32 a3=tmp33 a4=tmp34 a5=tmp35 a6=tmp36 a7=tmp37 a8=tmp38 a9=tmp39 b0=odw0 b1=odw1 b2=odw2 b3=odw3 b4=odw4 b5=odw5 b6=odw6 b7=odw7 b8=odw8 b9=odw9 o0=tmp40 o1=tmp41 o2=tmp42 o3=tmp43 o4=tmp44 o5=tmp45 o6=tmp46 o7=tmp47 o8=tmp48 o9=tmp49 CIN=ZERO
+
+# sommatore4 + lavatrice
+.subckt SOMMATORE10 a0=tmp40 a1=tmp41 a2=tmp42 a3=tmp43 a4=tmp44 a5=tmp45 a6=tmp46 a7=tmp47 a8=tmp48 a9=tmp49 b0=owm0 b1=owm1 b2=owm2 b3=owm3 b4=owm4 b5=owm5 b6=owm6 b7=owm7 b8=owm8 b9=owm9 o0=tmp50 o1=tmp51 o2=tmp52 o3=tmp53 o4=tmp54 o5=tmp55 o6=tmp56 o7=tmp57 o8=tmp58 o9=tmp59 CIN=ZERO
+
+# sommatore5 + lampadine 60W
+.subckt SOMMATORE10 a0=tmp50 a1=tmp51 a2=tmp52 a3=tmp53 a4=tmp54 a5=tmp55 a6=tmp56 a7=tmp57 a8=tmp58 a9=tmp59 b0=ol0 b1=ol1 b2=ol2 b3=ol3 b4=ol4 b5=ol5 b6=ol6 b7=ol7 b8=ol8 b9=ol9 o0=tmp60 o1=tmp61 o2=tmp62 o3=tmp63 o4=tmp64 o5=tmp65 o6=tmp66 o7=tmp67 o8=tmp68 o9=tmp69 CIN=ZERO
+
+# sommatore6 + lampadine 100W
+.subckt SOMMATORE10 a0=tmp60 a1=tmp61 a2=tmp62 a3=tmp63 a4=tmp64 a5=tmp65 a6=tmp66 a7=tmp67 a8=tmp68 a9=tmp69 b0=olm0 b1=olm1 b2=olm2 b3=olm3 b4=olm4 b5=olm5 b6=olm6 b7=olm7 b8=olm8 b9=olm9 o0=tmp70 o1=tmp71 o2=tmp72 o3=tmp73 o4=tmp74 o5=tmp75 o6=tmp76 o7=tmp77 o8=tmp78 o9=tmp79 CIN=ZERO
+
+# sommatore7 + hi-fi
+.subckt SOMMATORE10 a0=tmp70 a1=tmp71 a2=tmp72 a3=tmp73 a4=tmp74 a5=tmp75 a6=tmp76 a7=tmp77 a8=tmp78 a9=tmp79 b0=oh0 b1=oh1 b2=oh2 b3=oh3 b4=oh4 b5=oh5 b6=oh6 b7=oh7 b8=oh8 b9=oh9 o0=tmp80 o1=tmp81 o2=tmp82 o3=tmp83 o4=tmp84 o5=tmp85 o6=tmp86 o7=tmp87 o8=tmp88 o9=tmp89 CIN=ZERO
+
+# sommatore8 + tv
+.subckt SOMMATORE10 a0=tmp80 a1=tmp81 a2=tmp82 a3=tmp83 a4=tmp84 a5=tmp85 a6=tmp86 a7=tmp87 a8=tmp88 a9=tmp89 b0=ot0 b1=ot1 b2=ot2 b3=ot3 b4=ot4 b5=ot5 b6=ot6 b7=ot7 b8=ot8 b9=ot9 o0=SOMME0 o1=SOMME1 o2=SOMME2 o3=SOMME3 o4=SOMME4 o5=SOMME5 o6=SOMME6 o7=SOMME7 o8=SOMME8 o9=SOMME9 CIN=ZERO
+
+
+# comparatori
+
+# minore o uguale a 150
+.subckt MINOREUG10 C9=SOMME0 C8=SOMME1 C7=SOMME2 C6=SOMME3 C5=SOMME4 C4=SOMME5 C3=SOMME6 C2=SOMME7 C1=SOMME8 C0=SOMME9 D9=x0 D8=x1 D7=x2 D6=x3 D5=x4 D4=x5 D3=x6 D2=x7 D1=x8 D0=x9 CleD=COD0
+
+# minore o uguale a 300
+.subckt MINOREUG10 C9=SOMME0 C8=SOMME1 C7=SOMME2 C6=SOMME3 C5=SOMME4 C4=SOMME5 C3=SOMME6 C2=SOMME7 C1=SOMME8 C0=SOMME9 D9=y0 D8=y1 D7=y2 D6=y3 D5=y4 D4=y5 D3=y6 D2=y7 D1=y8 D0=y9 CleD=COD1
+
+# minore o uguale a 450
+.subckt MINOREUG10 C9=SOMME0 C8=SOMME1 C7=SOMME2 C6=SOMME3 C5=SOMME4 C4=SOMME5 C3=SOMME6 C2=SOMME7 C1=SOMME8 C0=SOMME9 D9=z0 D8=z1 D7=z2 D6=z3 D5=z4 D4=z5 D3=z6 D2=z7 D1=z8 D0=z9 CleD=COD2
+
+
+.search registro1.blif
+.search mux4in1.blif
+.search mux10.blif
+.search sommatore10.blif
+.search minoreug10.blif
+.end
+
+
+# definizione delle costanti
+
+# consumo nullo
+.model COSTANTE0
+.outputs k0 k1 k2 k3 k4 k5 k6 k7 k8 k9
+.names k0
+.names k1
+.names k2
+.names k3
+.names k4
+.names k5
+.names k6
+.names k7
+.names k8
+.names k9
+.end
+
+# consumi dei dispositivi
+.model FORNO
+.outputs ov0 ov1 ov2 ov3 ov4 ov5 ov6 ov7 ov8 ov9
+.names ov0
+.names ov1
+.names ov2
+1
+.names ov3
+1
+.names ov4
+.names ov5
+.names ov6
+1
+.names ov7
+.names ov8
+.names ov9
+.end
+
+.model FRIGO
+.outputs f0 f1 f2 f3 f4 f5 f6 f7 f8 f9
+.names f0
+.names f1
+.names f2
+.names f3
+.names f4
+.names f5
+1
+.names f6
+1
+.names f7
+1
+.names f8
+1
+.names f9
+.end
+
+.model ASPIRAPOLVERE
+.outputs as0 as1 as2 as3 as4 as5 as6 as7 as8 as9
+.names as0
+.names as1
+.names as2
+.names as3
+1
+.names as4
+1
+.names as5
+1
+.names as6
+1
+.names as7
+.names as8
+.names as9
+.end
+
+.model PHON
+.outputs p0 p1 p2 p3 p4 p5 p6 p7 p8 p9
+.names p0
+.names p1
+.names p2
+.names p3
+1
+.names p4
+1
+.names p5
+.names p6
+.names p7
+1
+.names p8
+.names p9
+.end
+
+.model LAVASTOVIGLIE
+.outputs dw0 dw1 dw2 dw3 dw4 dw5 dw6 dw7 dw8 dw9
+.names dw0
+.names dw1
+.names dw2
+1
+.names dw3
+1
+.names dw4
+.names dw5
+.names dw6
+1
+.names dw7
+.names dw8
+.names dw9
+.end
+
+.model LAVATRICE
+.outputs wm0 wm1 wm2 wm3 wm4 wm5 wm6 wm7 wm8 wm9
+.names wm0
+.names wm1
+.names wm2
+1
+.names wm3
+.names wm4
+1
+.names wm5
+1
+.names wm6
+.names wm7
+1
+.names wm8
+.names wm9
+.end
+
+.model LAMP6
+.outputs l0 l1 l2 l3 l4 l5 l6 l7 l8 l9
+.names l0
+.names l1
+.names l2
+.names l3
+.names l4
+.names l5
+1
+.names l6
+1
+.names l7
+.names l8
+.names l9
+.end
+
+.model LAMP10
+.outputs lm0 lm1 lm2 lm3 lm4 lm5 lm6 lm7 lm8 lm9
+.names lm0
+.names lm1
+.names lm2
+.names lm3
+.names lm4
+1
+.names lm5
+.names lm6
+1
+.names lm7
+.names lm8
+.names lm9
+.end
+
+.model HIFI
+.outputs h0 h1 h2 h3 h4 h5 h6 h7 h8 h9
+.names h0
+.names h1
+.names h2
+.names h3
+.names h4
+.names h5
+1
+.names h6
+.names h7
+1
+.names h8
+.names h9
+.end
+
+.model TV
+.outputs t0 t1 t2 t3 t4 t5 t6 t7 t8 t9
+.names t0
+.names t1
+.names t2
+.names t3
+.names t4
+1
+.names t5
+.names t6
+1
+.names t7
+.names t8
+.names t9
+.end
+
+# estremi delle fasce
+.model COSTANTE150
+.outputs x0 x1 x2 x3 x4 x5 x6 x7 x8 x9
+.names x0
+.names x1
+.names x2
+1
+.names x3
+.names x4
+.names x5
+1
+.names x6
+.names x7
+1
+.names x8
+1
+.names x9
+.end
+
+.model COSTANTE300
+.outputs y0 y1 y2 y3 y4 y5 y6 y7 y8 y9
+.names y0
+.names y1
+1
+.names y2
+.names y3
+.names y4
+1
+.names y5
+.names y6
+1
+.names y7
+1
+.names y8
+.names y9
+.end
+
+.model COSTANTE450
+.outputs z0 z1 z2 z3 z4 z5 z6 z7 z8 z9
+.names z0
+.names z1
+1
+.names z2
+1
+.names z3
+1
+.names z4
+.names z5
+.names z6
+.names z7
+.names z8
+1
+.names z9
+.end

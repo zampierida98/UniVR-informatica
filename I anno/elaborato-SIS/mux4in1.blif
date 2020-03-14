@@ -1,0 +1,11 @@
+.model MUX4IN1
+.inputs s0 s1 i0 i1 i2 i3
+.outputs out
+
+.names s0 s1 i0 i1 i2 i3 out
+001--- 1
+01-1-- 1
+10--1- 1
+11---1 1
+
+.end

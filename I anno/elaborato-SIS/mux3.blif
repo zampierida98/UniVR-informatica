@@ -1,0 +1,10 @@
+.model MUX3
+.inputs X a0 a1 a2 b0 b1 b2
+.outputs o0 o1 o2
+
+.subckt MUX1 S=X i0=a0 i1=b0 out=o0
+.subckt MUX1 S=X i0=a1 i1=b1 out=o1
+.subckt MUX1 S=X i0=a2 i1=b2 out=o2
+
+.search mux1.blif
+.end

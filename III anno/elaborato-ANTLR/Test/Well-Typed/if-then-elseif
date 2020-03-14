@@ -1,0 +1,10 @@
+if (false) then {
+    out(0)
+}
+elseif (false) {
+    out(0)
+}
+elseif (true) {
+    out(1)
+};
+out(2)

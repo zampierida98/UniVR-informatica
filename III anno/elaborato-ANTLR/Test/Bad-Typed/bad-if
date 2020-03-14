@@ -1,0 +1,7 @@
+if (false) then {
+    skip
+} elseif (false) {
+    skip
+} elseif (10) {
+    skip
+}

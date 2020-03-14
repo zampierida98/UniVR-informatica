@@ -1,0 +1,17 @@
+.model MUX10
+.inputs X a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 b0 b1 b2 b3 b4 b5 b6 b7 b8 b9
+.outputs o0 o1 o2 o3 o4 o5 o6 o7 o8 o9
+
+.subckt MUX1 S=X i0=a0 i1=b0 out=o0
+.subckt MUX1 S=X i0=a1 i1=b1 out=o1
+.subckt MUX1 S=X i0=a2 i1=b2 out=o2
+.subckt MUX1 S=X i0=a3 i1=b3 out=o3
+.subckt MUX1 S=X i0=a4 i1=b4 out=o4
+.subckt MUX1 S=X i0=a5 i1=b5 out=o5
+.subckt MUX1 S=X i0=a6 i1=b6 out=o6
+.subckt MUX1 S=X i0=a7 i1=b7 out=o7
+.subckt MUX1 S=X i0=a8 i1=b8 out=o8
+.subckt MUX1 S=X i0=a9 i1=b9 out=o9
+
+.search mux1.blif
+.end
