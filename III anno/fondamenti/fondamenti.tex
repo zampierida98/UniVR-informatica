@@ -1,0 +1,928 @@
+% !TEX encoding = UTF-8
+\documentclass[a4paper,oneside,titlepage]{book}
+%\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[nouppercase]{frontespizio}
+\usepackage{graphicx}
+\graphicspath{{./immagini/}}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning, automata}
+\usepackage{xcolor}
+
+% Impostazioni per i listati di codice:
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{backcolour}{rgb}{1,1,1}
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},
+	numberstyle=\tiny\color{codegray},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2,
+	frame=tb,
+	mathescape
+}
+\lstset{style=mystyle}
+
+% Comandi:
+\newcommand{\mail}[1]{\href{mailto:#1}{\texttt{#1}}}
+
+
+\begin{document}
+
+\begin{frontespizio}
+	\Universita{Verona}
+	\Dipartimento{Informatica}
+	\Corso[Laurea]{Informatica}
+	\Titolo{Guida agli esercizi per il corso di Fondamenti}
+	\NCandidato{Creato da}
+	\Candidato{Davide Zampieri}
+	\Annoaccademico{2019-2020}
+\end{frontespizio}
+
+\frontmatter
+\tableofcontents
+
+\mainmatter
+\chapter{Linguaggi (I parte)}
+
+\section{Linguaggi regolari}
+Quelli elencati di seguito sono tutti linguaggi regolari. Inoltre, è presente anche la traccia dell'automa per la dimostrazione.
+\begin{enumerate}[label=\fbox{\arabic*}]
+\item $L = \text{\{ } 0^n 1^m  \ | \  n,m \geq 1 \text{ \}}$
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid]
+\node[state,initial] (q0) {$q_0$};
+\node[state] (q1) [right=of q0] {$q_1$};
+\node[state,accepting] (q2) [below=of q1] {$q_2$};
+\node[state] (qb) [left=of q2] {$q_{\bot}$};
+\path[->]
+(q0) edge [bend left] node [above] {0} (q1)
+(q0) edge [bend right] node [left] {1} (qb)
+(q1) edge [loop right] node [right] {0} ()
+(q1) edge [bend left] node [right] {1} (q2)
+(q2) edge [loop right] node [right] {1} ()
+(q2) edge [bend left] node [below] {0} (qb)
+(qb) edge [loop left] node [left] {0,1} ();
+\end{tikzpicture}	
+\end{center}
+
+\item $L = \text{\{ } x \in \{0,1\}^* \ | \text{ x contiene almeno due 1 \}}$
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid]
+\node[state,initial] (q0) {$q_0$};
+\node[state] (q1) [right=of q0] {$q_1$};
+\node[state,accepting] (q2) [right=of q1] {$q_2$};
+\path[->]
+(q0) edge [bend left] node [above] {1} (q1)
+(q0) edge [loop below] node [below] {0} ()
+(q1) edge [loop below] node [below] {0} ()
+(q1) edge [bend left] node [above] {1} (q2)
+(q2) edge [loop below] node [below] {0,1} ();
+\end{tikzpicture}	
+\end{center}
+
+\item $L_m = \text{\{ } 0^n 1^m  \ | \  n \in m + 3 \mathbb{N} \text{ \}}$
+\\ Riscriviamo $L_m$ come $L_m = 0^m \cdot \text{\{ } 0^{3n}  \ | \  n \in \mathbb{N} \text{ \}} \cdot 1^m$ con $0^m$ e $1^m$ linguaggi regolari (finiti). Ci basta quindi scrivere un automa per il linguaggio $\text{\{ } 0^{3n}  \ | \  n \in \mathbb{N} \text{ \}}$.
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid]
+\node[state,initial,accepting] (q0) {$q_0$};
+\node[state] (q1) [right=of q0] {$q_1$};
+\node[state] (q2) [right=of q1] {$q_2$};
+\node[state] (qb) [below=of q1] {$q_{\bot}$};
+\path[->]
+(q0) edge [bend right] node [below] {0} (q1)
+(q1) edge [bend right] node [below] {0} (q2)
+(q2) edge [bend right] node [above] {0} (q0)
+
+(q0) edge [bend right] node [below] {1} (qb)
+(q1) edge [bend left] node [left] {1} (qb)
+(q2) edge [bend left] node [below] {1} (qb)
+
+(qb) edge [loop below] node [below] {0,1} ();
+\end{tikzpicture}	
+\end{center}
+
+\item $L = \text{\{ } \sigma \in \{0,1\}^* \text{ t.c. } |\sigma|_0 \in 2\mathbb{N}+1 \vee |\sigma|_1 \in 2\mathbb{N} \text{ \}}$
+\\ $L$ è l'unione dei seguenti linguaggi:
+\begin{itemize}
+\item $L_0 = \text{\{ } \sigma \in \{0,1\}^* \ | \text{ numero di 0 dispari \}}$
+\item $L_1 = \text{\{ } \sigma \in \{0,1\}^* \ | \text{ numero di 1 pari \}}$
+\end{itemize}
+Ci basta quindi scrivere un automa per ogni linguaggio dell'unione.
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid]
+\node[state,initial] (q0) {$q_0$};
+\node[state,accepting] (q1) [right=of q0] {$q_1$};
+\path[->]
+(q0) edge [bend left] node [above] {0} (q1)
+(q0) edge [loop below] node [below] {1} ()
+(q1) edge [loop below] node [below] {1} ()
+(q1) edge [bend left] node [below] {0} (q0);
+\end{tikzpicture}	
+\end{center}
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid]
+\node[state,initial,accepting] (q0) {$q_0$};
+\node[state] (q1) [right=of q0] {$q_1$};
+\path[->]
+(q0) edge [bend left] node [above] {1} (q1)
+(q0) edge [loop below] node [below] {0} ()
+(q1) edge [loop below] node [below] {0} ()
+(q1) edge [bend left] node [below] {1} (q0);
+\end{tikzpicture}	
+\end{center}
+
+\item $L = \text{\{ } a^{2n}  \ | \  n \in \mathbb{N} \text{ \}}$
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid]
+\node[state,initial,accepting] (q0) {$q_0$};
+\node[state] (q1) [right=of q0] {$q_1$};
+\node[state] (qb) [below=of q0] {$q_{\bot}$};
+\path[->]
+(q0) edge [bend left] node [above] {a} (q1)
+(q1) edge [bend left] node [below] {a} (q0)
+
+(q0) edge [bend right] node [left] {b} (qb)
+(q1) edge [bend left] node [right] {b} (qb)
+
+(qb) edge [loop below] node [below] {a,b} ();
+\end{tikzpicture}	
+\end{center}
+
+\newpage
+\item $L = \text{\{ } \sigma \in \{0,1\}^* \text{ t.c. } |\sigma|_1 \in 3\mathbb{N} \text{ \}}$
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid]
+\node[state,initial,accepting] (q0) {$q_0$};
+\node[state] (q1) [right=of q0] {$q_1$};
+\node[state] (q2) [right=of q1] {$q_2$};
+\path[->]
+(q0) edge [bend right] node [below] {1} (q1)
+(q1) edge [bend right] node [below] {1} (q2)
+(q2) edge [bend right] node [above] {1} (q0)
+
+(q0) edge [loop below] node [below] {0} ()
+(q1) edge [loop below] node [below] {0} ()
+(q2) edge [loop below] node [below] {0} ();
+\end{tikzpicture}	
+\end{center}
+
+\item $L = \text{\{ } \sigma \in \{0,1\}^* \ | \text{ gli 0 sono sempre a coppie \}}$
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid]
+\node[state,initial,accepting] (q0) {$q_0$};
+\node[state] (q1) [right=of q0] {$q_1$};
+\node[state] (qb) [right=of q1] {$q_{\bot}$};
+\path[->]
+(q0) edge [bend left] node [above] {0} (q1)
+(q1) edge [bend left] node [below] {0} (q0)
+(q1) edge [bend left] node [above] {1} (qb)
+
+(q0) edge [loop below] node [below] {1} ()
+(qb) edge [loop below] node [below] {0,1} ();
+\end{tikzpicture}	
+\end{center}
+
+\item $L = \text{\{ } \sigma \in \{0,1\}^* \ | \text{ almeno due 0 consecutivi } \wedge \text{ mai due 1 consecutivi \}}$
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid]
+\node[state,initial] (q0) {$q_0$};
+\node[state] (q1) [right=of q0] {$q_1$};
+\node[state,accepting] (q2) [right=of q1] {$q_2$};
+\node[state,accepting] (q3) [below=of q2] {$q_3$};
+\node[state] (q4) [left=of q3] {$q_4$};
+\node[state] (qb) [below=of q4] {$q_{\bot}$};
+\path[->]
+(q0) edge [bend left] node [above] {0} (q1)
+(q0) edge [bend right] node [below] {1} (q4)
+(q1) edge [bend right] node [left] {1} (q4)
+(q1) edge [bend left] node [above] {0} (q2)
+(q2) edge [bend right] node [left] {1} (q3)
+(q3) edge [bend right] node [right] {0} (q2)
+(q3) edge [bend left] node [below] {1} (qb)
+(q4) edge [bend right] node [right] {0} (q1)
+(q4) edge [bend right] node [left] {1} (qb)
+
+(q2) edge [loop right] node [right] {0} ()
+(qb) edge [loop left] node [left] {0,1} ();
+\end{tikzpicture}	
+\end{center}
+
+\item $A = \text{\{ } \sigma \in \{0,1\}^* \ | \text{ ogni sequenza di 1 è seguita da almeno due 0 \}}$
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid]
+\node[state,initial,accepting] (q0) {$q_0$};
+\node[state] (q1) [right=of q0] {$q_1$};
+\node[state] (q2) [right=of q1] {$q_2$};
+\node[state] (qb) [below=of q1] {$q_{\bot}$};
+\path[->]
+(q0) edge [bend left] node [above] {1} (q1)
+(q1) edge [bend left] node [above] {0} (q2)
+(q2) edge [bend left] node [below] {1} (qb)
+
+(q0) edge [loop below] node [below] {0} ()
+(q1) edge [loop below] node [below] {1} ()
+(qb) edge [loop left] node [left] {0,1} ();
+\end{tikzpicture}	
+\end{center}
+\end{enumerate}
+
+\section{Linguaggi CF}
+Quelli elencati di seguito sono tutti linguaggi CF. Inoltre, sono presenti anche la stringa da usare per il pumping lemma e la traccia della grammatica per la dimostrazione.
+\begin{enumerate}[label=\fbox{\arabic*}]
+\item $L = \text{\{ } \sigma \in \{0,1\}^*  \ | \  \sigma \text{ è palindroma \}}$
+\\ Per dimostrare che $L$ non è regolare, utilizziamo per esempio la stringa $z = 0^n 1^n 1^n 0^n$ per il pumping lemma. La grammatica che descrive $L$, invece, è la seguente:
+\[ S \longrightarrow 0S0 \ | \  1S1 \ | \  0 \ | \  1 \ | \  \epsilon \]
+
+\item $L = \text{\{ } a^n b^n \ | \  n \in \mathbb{N} \text{ \}}$
+\\ Per dimostrare che $L$ non è regolare, utilizziamo per esempio la stringa $z = a^k b^k$ per il pumping lemma. La grammatica che descrive $L$, invece, è la seguente:
+\[ S \longrightarrow aSb \ | \ \epsilon \]
+
+\item $L = \text{\{ } a^n b^m c^h \ | \  n \leq m + h \ \wedge \ m,h \in \mathbb{N} \text{ \}}$
+\\ Per dimostrare che $L$ non è regolare, utilizziamo per esempio la stringa $z = a^{2k} b^k c^k$ per il pumping lemma. La grammatica che descrive $L$, invece, è la seguente:
+\[ S \longrightarrow aSc \ | \ Sc \ | \ A \]
+\[ A \longrightarrow aAb \ | \ Ab \ | \ \epsilon \]
+
+\item $L = \text{\{ } 0^n 1^m  \ | \  n \in m + 3 \mathbb{N} \ \wedge \ m \in \mathbb{N} \text{ \}}$
+\\ Riscriviamo $L$ come $L = \text{\{ } 0^m 0^{3n} 1^m  \ | \  n,m \in \mathbb{N} \text{ \}}$. Per dimostrare che $L$ non è regolare, utilizziamo per esempio la stringa $z = 0^k 0^{3k} 1^k$ per il pumping lemma. La grammatica che descrive $L$, invece, è la seguente:
+\[ S \longrightarrow 0S1 \ | \  000S \ | \  \epsilon \]
+
+\item $B = \text{\{ } \sigma \ | \text{ ogni sequenza di 0 è seguita dallo stesso numero di 1 \}}$
+\\ Per dimostrare che $B$ non è regolare, utilizziamo per esempio la stringa $z = 0^k 1^k$ per il pumping lemma. La grammatica che descrive $B$, invece, è la seguente:
+\[ S \longrightarrow 1S \ | \ A \ | \ \epsilon \]
+\[ A \longrightarrow 0B1A \ | \ \epsilon \]
+\[ B \longrightarrow 0B1 \ | \ \epsilon \]
+
+\item $L = \text{\{ } 0^m 1^n 0^h 1^{2h} \ | \  m,n,h \in \mathbb{N} \text{ \}}$
+\\ Per dimostrare che $L$ non è regolare, utilizziamo per esempio la stringa $z = 0^k 1^{2k}$ per il pumping lemma. La grammatica che descrive $L$, invece, è la seguente:
+\[ S \longrightarrow 0S \ | \ A \]
+\[ A \longrightarrow 1A \ | \ B \]
+\[ B \longrightarrow 0B11 \ | \ \epsilon \]
+
+\item $L = \text{\{ } 0^n 1^m 0^n \ | \  n,m \in \mathbb{N} \text{ \}}$
+\\ Per dimostrare che $L$ non è regolare, utilizziamo per esempio la stringa $z = 0^k 1^k 0^k$ per il pumping lemma. La grammatica che descrive $L$, invece, è la seguente:
+\[ S \longrightarrow 0S0 \ | \ A \ | \ \epsilon \]
+\[ A \longrightarrow 1A \ | \ \epsilon \]
+\end{enumerate}
+
+\section{Linguaggi non CF}
+Quelli elencati di seguito sono tutti linguaggi non CF. Inoltre, è presente anche la stringa da usare per il pumping lemma.
+\begin{enumerate}[label=\fbox{\arabic*}]
+\item $L = \text{\{ } a^{2^n} \ | \  n \geq 1 \text{ \}}$
+\\ La presenza di un esponenziale ci fa intuire di avere a che fare con un linguaggio non CF. Infatti, per dimostrare che $L$ non è CF, si può utilizzare per esempio la stringa $z = a^{2^k}$ per il pumping lemma CF.
+
+\item $L = \text{\{ } a^n b^n c^n \ | \  n \geq 0 \text{ \}}$
+\\ La presenza di $n$ come esponente per 3 volte ci fa intuire di avere a che fare con un linguaggio non CF. Infatti, per dimostrare che $L$ non è CF, si può utilizzare per esempio la stringa $z = a^k b^k c^k$ per il pumping lemma CF.
+
+\item $L = \text{\{ } 0^n \ | \  n \text{ è un numero primo \}}$
+\\ La presenza dei numeri primi ci fa intuire di avere a che fare con un linguaggio non CF. Infatti, per dimostrare che $L$ non è CF, si può utilizzare per esempio la stringa $z = 0^k$ con $k$ numero primo per il pumping lemma CF.
+
+\item $L_1 \cap L_2$ con $L_1 = \text{\{ } a^i b^i c^j \ | \  i,j \geq 1 \text{ \}}$ e $L_2 = \text{\{ } a^i b^j c^j \ | \  i,j \geq 1 \text{ \}}$
+\begin{itemize}
+\item $L_1$ è CF
+\\ Per dimostrare che $L_1$ non è regolare, utilizziamo per esempio la stringa $z = a^k b^k c^k$ per il pumping lemma. La grammatica che descrive $L_1$, invece, è la seguente:
+\[ S \longrightarrow AC \]
+\[ A \longrightarrow aAb \ | \ ab \]
+\[ C \longrightarrow cC \ | \ c \]
+
+\item $L_2$ è CF
+\\ Per dimostrare che $L_2$ non è regolare, utilizziamo per esempio la stringa $z = a b^k c^k$ per il pumping lemma. La grammatica che descrive $L_2$, invece, è la seguente:
+\[ S \longrightarrow AB \]
+\[ A \longrightarrow aA \ | \ a \]
+\[ B \longrightarrow bBc \ | \ bc \]
+
+\item $L_1 \cap L_2 = \text{\{ } a^i b^i c^i \ | \  i \geq 1 \text{ \}}$ è non CF
+\\ Per dimostrare che $L_1 \cap L_2$ non è CF, si può utilizzare per esempio la stringa $z = a^k b^k c^k$ per il pumping lemma CF.
+\end{itemize}
+
+\item $L = \text{\{ } a^n b^n c^m \ | \  n \geq m \text{ \}}$
+\\ La presenza di $n$ come esponente per 2 volte unita alla presenza di un'ulteriore condizione su $n$ ci fa intuire di avere a che fare con un linguaggio non CF. Infatti, per dimostrare che $L$ non è CF, si può utilizzare per esempio la stringa $z = a^k b^k c^k$ per il pumping lemma CF.
+
+\item $L = \text{\{ } a^n b^j \ | \  n \leq j^2 \text{ \}}$
+\\ La presenza di un esponenziale nella condizione su $j$ ci fa intuire di avere a che fare con un linguaggio non CF. Infatti, per dimostrare che $L$ non è CF, si può utilizzare per esempio la stringa $z = a^{k^2} b^k$ per il pumping lemma CF.
+
+\item $L_h \cap M_h$ con $L_h = \{ 1^{h+m} 0^m 1^n \ | \  m,n \geq 1 \}$ e $M_h = \{ 1^n 0^m 1^{h+m} \ | \  m,n \geq 1 \}$
+\begin{itemize}
+\item $L_h$ al variare di $h$ sono tutti CF
+\\ Per dimostrare che $L_1$ non è regolare, utilizziamo per esempio la stringa $z = 1^k 1 0^k 1$ per il pumping lemma. La grammatica che descrive $L_1$, invece, è la seguente:
+\[ S \longrightarrow 1AB \]
+\[ A \longrightarrow 1A0 \ | \ 10 \]
+\[ B \longrightarrow 1B \ | \ 1 \]
+
+\item $M_h$ al variare di $h$ sono tutti CF
+\\ Per dimostrare che $M_1$ non è regolare, utilizziamo per esempio la stringa $z = 1 0^k 1^k 1$ per il pumping lemma. La grammatica che descrive $M_1$, invece, è la seguente:
+\[ S \longrightarrow 1S \ | \ 10B11 \]
+\[ B \longrightarrow 0B1 \ | \ \epsilon \]
+
+\item $L_h \cap M_h = \text{\{ } 1^{h+m} 0^m 1^{h+m} \ | \  m \geq 1 \text{ \}}$ è non CF
+\\ Per dimostrare che $L_h \cap M_h$ non è CF, si può utilizzare per esempio la stringa $z = 1^{2k} 0^k 1^{2k}$ per il pumping lemma CF.
+\end{itemize}
+\end{enumerate}
+
+\section{Esercizi di riepilogo sulla I parte}
+Per i linguaggi elencati di seguito è presente la relativa classificazione e anche una traccia per la dimostrazione.
+\begin{enumerate}[label=\fbox{\arabic*}]
+\item $L_m = \text{\{ } \sigma \in \{0,1\}^* \text{ t.c. } |\sigma|_0 = (|\sigma|_1)^m \text{ \}}$ al variare di $m$
+\begin{itemize}
+\item $L_0 = \text{\{ } \sigma \in \{0,1\}^* \text{ t.c. } |\sigma|_0 = 1 \text{ \}}$ è regolare
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid]
+\node[state,initial] (q0) {$q_0$};
+\node[state,accepting] (q1) [right=of q0] {$q_1$};
+\node[state] (qb) [right=of q1] {$q_{\bot}$};
+\path[->]
+(q0) edge [bend left] node [above] {0} (q1)
+(q1) edge [bend left] node [below] {0} (qb)
+
+(q0) edge [loop below] node [below] {1} ()
+(q1) edge [loop below] node [below] {1} ()
+(qb) edge [loop below] node [below] {0,1} ();
+\end{tikzpicture}	
+\end{center}
+
+\item $L_1 = \text{\{ } \sigma \in \{0,1\}^* \text{ t.c. } |\sigma|_0 = |\sigma|_1 \text{ \}}$ è CF
+\\ Per dimostrare che $L_1$ non è regolare, utilizziamo per esempio la stringa $z = 0^k 1^k$ per il pumping lemma. La grammatica che descrive $L_1$, invece, è la seguente:
+\[ S \longrightarrow S1S0S \ | \  S0S1S \ | \  \epsilon \]
+
+\item $L_2 = \text{\{ } \sigma \in \{0,1\}^* \text{ t.c. } |\sigma|_0 = (|\sigma|_1)^2 \text{ \}}$ è non CF
+\\ Per dimostrare che $L_2$ non è CF, utilizziamo per esempio la stringa $z = 0^{k^2} 1^k$ per il pumping lemma CF.
+
+\item $L_3, \ ..., \ L_m$ sono anch'essi non CF
+
+\item $\bigcap_{m \in \mathbb{N}} L_m = L_0$ è regolare
+\end{itemize}
+
+\item $L_m = \text{\{ } a^{3m} b^{2n} c^{4m \cdot n} \ | \  n \in \mathbb{N} \text{ \}}$ al variare di $m$
+\begin{itemize}
+\item $L_0 = \text{\{ } b^{2n} \ | \  n \in \mathbb{N} \text{ \}}$ è regolare
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid]
+\node[state,initial,accepting] (q0) {$q_0$};
+\node[state] (q1) [right=of q0] {$q_1$};
+\node[state] (qb) [below=of q0] {$q_{\bot}$};
+\path[->]
+(q0) edge [bend left] node [above] {b} (q1)
+(q1) edge [bend left] node [below] {b} (q0)
+
+(q0) edge [bend right] node [left] {a} (qb)
+(q1) edge [bend left] node [right] {a} (qb)
+
+(qb) edge [loop below] node [below] {a,b} ();
+\end{tikzpicture}	
+\end{center}
+
+\item $L_1 = \text{\{ } a^3 b^{2n} c^{4n} \ | \  n \in \mathbb{N} \text{ \}}$ è CF
+\\ Per dimostrare che $L_1$ non è regolare, utilizziamo per esempio la stringa $z = a^3 b^k c^{2k}$ con $k \in 2\mathbb{N}$ per il pumping lemma. La grammatica che descrive $L_1$, invece, è la seguente:
+\[ S \longrightarrow aaaA \]
+\[ A \longrightarrow bbAcccc \ | \ \epsilon \]
+
+\item $L_2, \ ..., \ L_m$ sono anch'essi CF
+
+\item $L = \bigcup_{m \in \mathbb{N}} L_m = \text{\{ } a^{3m} b^{2n} c^{4m \cdot n} \ | \  n,m \in \mathbb{N} \text{ \}}$ è non CF
+\\ Per dimostrare che $L$ non è CF, utilizziamo per esempio la stringa $z = a^{3k} b^{2k} c^{4k^2}$ per il pumping lemma CF.
+
+\item $\bigcap_{m \in \mathbb{N}} L_m = \varnothing$ è regolare
+\end{itemize}
+
+\item $L_n = \left\lbrace 1^{n^k} 0^n 1^{n^k} \ | \  k \in \mathbb{N} \right\rbrace$ al variare di $n > 0$
+\begin{itemize}
+\item $L_1 = \text{\{ } 101 \text{ \}}$ è regolare (finito)
+
+\item $L_2 = \left\lbrace 1^{2^k} 0^2 1^{2^k} \ | \  k \in \mathbb{N} \right\rbrace$ è non CF
+\\ Per dimostrare che $L_2$ non è CF, utilizziamo per esempio la stringa $z = 1^{2^k} 0^2 1^{2^k}$ per il pumping lemma CF.
+
+\item $L_3, \ ..., \ L_m$ sono anch'essi non CF
+
+\item $\bigcap_{n > 0} L_n = \varnothing$ è regolare
+\end{itemize}
+
+\newpage
+\item $L_n = \text{\{ } a^m b^m c^m \ | \  m \leq n \text{ \}}$
+\begin{itemize}
+\item $L_n$ al variare di $n$ sono tutti regolari (finiti)
+
+\item $\bigcap_{n \in \mathbb{N}} L_n = \text{\{ } \epsilon \text{ \}}$ è regolare
+
+\item $L = \bigcup_{n \in \mathbb{N}} L_n = \text{\{ } a^n b^n c^n \ | \  n \geq 0 \text{ \}}$ è non CF
+\\ Per dimostrare che $L$ non è CF, utilizziamo per esempio la stringa $z = a^k b^k c^k$ per il pumping lemma CF.
+\end{itemize}
+
+\item $A_{m,n} = \text{\{ } \sigma \in \{a,b\}^* \ | \ \sigma = (a^n b^{2n})^m \text{ \}}$
+\begin{itemize}
+\item $A_{m,n}$ al variare di $m$ e $n$ sono tutti regolari (finiti)
+
+\item $B_m = \bigcup_{n \in \mathbb{N}} A_{m,n} = \text{\{ } \sigma \in \{a,b\}^* \ | \ \sigma = (a^n b^{2n})^m \ \wedge \ n \in \mathbb{N} \text{ \}}$ è CF per $m=1$
+\\ Per dimostrare che $B_1$ non è regolare, utilizziamo per esempio la stringa $z = a^k b^{2k}$ per il pumping lemma. La grammatica che descrive $B_1$, invece, è la seguente:
+\[ S \longrightarrow aSbb \ | \ \epsilon \]
+
+\item $B_m$ è non CF per $m \geq 2$
+\\ Per dimostrare che $B_2$ non è CF, utilizziamo per esempio la stringa $z = a^k b^{2k} a^k b^{2k}$ per il pumping lemma CF.
+
+\item $C_n = \bigcup_{m \in \mathbb{N}} A_{m,n} = \text{\{ } \sigma \in \{a,b\}^* \ | \ \sigma = (a^n b^{2n})^m \ \wedge \ m \in \mathbb{N} \text{ \}}$ al variare di $n$ sono tutti regolari
+\\ Per dimostrare che $C_1$ è regolare, scriviamo il seguente automa:
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid]
+\node[state,initial,accepting] (q0) {$q_0$};
+\node[state] (q1) [right=of q0] {$q_1$};
+\node[state] (q2) [right=of q1] {$q_2$};
+\node[state] (qb) [below=of q1] {$q_{\bot}$};
+\path[->]
+(q0) edge [bend right] node [below] {a} (q1)
+(q1) edge [bend right] node [below] {b} (q2)
+(q2) edge [bend right] node [above] {b} (q0)
+
+(q0) edge [bend right] node [below] {b} (qb)
+(q1) edge [bend left] node [left] {a} (qb)
+(q2) edge [bend left] node [below] {a} (qb)
+
+(qb) edge [loop below] node [below] {a,b} ();
+\end{tikzpicture}	
+\end{center}
+\end{itemize}
+
+\item $L_m = \text{\{ } 0^m 1^{2m} 1^{2n} 0^{3n} \ | \  n \in \mathbb{N} \text{ \}}$
+\begin{itemize}
+\item $L_m$ al variare di $m$ sono tutti CF
+\\ Per dimostrare che $L_0$ non è regolare, utilizziamo per esempio la stringa $z = 1^{2k} 0^{3k}$ per il pumping lemma. La grammatica che descrive $L_0$, invece, è la seguente:
+\[ S \longrightarrow 11S000 \ | \ \epsilon \]
+
+\newpage
+\item $L = \bigcup_{m \in \mathbb{N}} L_m = \text{\{ } 0^m 1^{2m} 1^{2n} 0^{3n} \ | \  n,m \in \mathbb{N} \text{ \}}$ è CF
+\\ Per dimostrare che $L$ non è regolare, utilizziamo per esempio la stringa $z = 0^k 1^{2k} 1^{2k} 0^{3k}$ per il pumping lemma. La grammatica che descrive $L$, invece, è la seguente:
+\[ S \longrightarrow AB \ | \ \epsilon \]
+\[ A \longrightarrow 0A11 \ | \ \epsilon \]
+\[ B \longrightarrow 11B000 \ | \ \epsilon \]
+
+\item $H = L \cap \text{\{ } 0^n 1^m 0^{3n} \ | \  n,m \in \mathbb{N} \text{ \}} = \text{\{ } 0^m 1^{4m} 0^{3m} \ | \  m \in \mathbb{N} \text{ \}}$ è non CF
+\\ Per dimostrare che $H$ non è CF, utilizziamo per esempio la stringa $z = 0^k 1^{4k} 0^{3k}$ per il pumping lemma CF.
+\end{itemize}
+\end{enumerate}
+
+
+\chapter{Insiemi (II parte)}
+
+\section{Insiemi creativi}
+Quelli elencati di seguito sono tutti insiemi creativi (e quindi i loro complementari sono produttivi). Inoltre, è presente anche una traccia per la dimostrazione.
+\begin{enumerate}[label=\fbox{\arabic*}]
+\item $A = \text{\{ } x \ | \ \varphi_x(2x^2+x)\downarrow \text{ \}}$
+\\ Per dimostrare che $A$ è R.E., scriviamo per esempio il seguente algoritmo:
+\begin{lstlisting}
+input($x$);
+$y$ = $2x^2 + x$;
+if $\varphi_x(y)\downarrow$ then return 1;
+\end{lstlisting}
+Per dimostrare che $K \preceq A$, usiamo una funzione parziale ricorsiva $\psi(x,y)$ definita come
+\[
+\psi(x,y) =
+\begin{cases}
+1& \hspace{0.5cm} \text{se } x \in K \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+e descritta per esempio dal seguente algoritmo:
+\begin{lstlisting}
+input($x$);
+input($y$);
+if $\varphi_x(x)\downarrow$ then return 1;
+\end{lstlisting}
+
+\item $A = \text{\{ } x \ | \ \varphi_x(2x^2+x)=5 \text{ \}}$
+\\ Per dimostrare che $A$ è R.E., scriviamo per esempio il seguente algoritmo:
+\begin{lstlisting}
+input($x$);
+$y$ = $2x^2 + x$;
+if $\varphi_x(y)$ = 5 then return 1;
+else while true {
+    $x$ = $x$;
+}
+\end{lstlisting}
+Per dimostrare che $K \preceq A$, usiamo una funzione parziale ricorsiva $\psi(x,y)$ definita come
+\[
+\psi(x,y) =
+\begin{cases}
+5& \hspace{0.5cm} \text{se } x \in K \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+\newpage
+e descritta per esempio dal seguente algoritmo:
+\begin{lstlisting}
+input($x$);
+input($y$);
+if $\varphi_x(x)\downarrow$ then return 5;
+\end{lstlisting}
+
+\item $A = \text{\{ } x \ | \ \varphi_x(2x^2+x)=x^3 \text{ \}}$
+\\ Per dimostrare che $A$ è R.E., scriviamo per esempio il seguente algoritmo:
+\begin{lstlisting}
+input($x$);
+$y$ = $2x^2 + x$;
+$z$ = $x^3$;
+if $\varphi_x(y)$ = $z$ then return 1;
+else while true {
+    $x$ = $x$;
+}
+\end{lstlisting}
+Per dimostrare che $K \preceq A$, usiamo una funzione parziale ricorsiva $\psi(x,y)$ definita come
+\[
+\psi(x,y) =
+\begin{cases}
+z^3& \hspace{0.5cm} \text{se } x \in K \ \wedge \ y = 2z^2+z \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+e descritta per esempio dal seguente algoritmo:
+\begin{lstlisting}
+input($x$);
+input($y$);
+$z$ = 0;
+while $z$ <= $y$ {
+    if $y$ = $2z^2+z$ then
+        if $\varphi_x(x)\downarrow$ then return $z^3$;
+    $z$ = $z$ + 1;
+}
+\end{lstlisting}
+
+\item $A = \text{\{ } x^x + x \ | \ \varphi_x(\varphi_x(x^x))=11 \text{ \}}$
+\\ Per dimostrare che $A$ è R.E., scriviamo per esempio il seguente algoritmo:
+\begin{lstlisting}
+input($x$);
+$y$ = $x^x$;
+if $\varphi_x(\varphi_x(y))$ = 11 then return 1;
+else while true {
+    $x$ = $x$;
+}
+\end{lstlisting}
+Per dimostrare che $K \preceq A$, usiamo una funzione parziale ricorsiva $\psi(x,y)$ definita come
+\[
+\psi(x,y) =
+\begin{cases}
+11& \hspace{0.5cm} \text{se } x \in K \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+e descritta per esempio dal seguente algoritmo:
+\begin{lstlisting}[frame=tb]
+input($x$);
+input($y$);
+if $\varphi_x(x)\downarrow$ then return 11;
+\end{lstlisting}
+
+\newpage
+\item $A = \text{\{ } x \ | \ x \ mod \ 7 = 0 \Rightarrow \varphi_{x \ div \ 7}(x^3 + 1) = x^7 \text{ \}}$
+\\ Per dimostrare che $A$ è R.E., scriviamo per esempio il seguente algoritmo:
+\begin{lstlisting}
+input($x$);
+$y$ = $x^3 + 1$;
+$z$ = $x^7$;
+if $x \ mod \ 7$ = 0 then
+    if $\varphi_{x/7}(y)$ = $z$ then return 1;
+    else while true {
+        $x$ = $x$;
+    }
+else return 1;
+\end{lstlisting}
+Notiamo che tale algoritmo restituisce 1 se $V \Rightarrow V$ e anche se $F \Rightarrow V$ o $F \Rightarrow F$, come da definizione di implicazione logica.
+\\ Per dimostrare che $K \preceq A$, usiamo una funzione parziale ricorsiva $\psi(x,y)$ definita come
+\[
+\psi(x,y) =
+\begin{cases}
+z^7& \hspace{0.5cm} \text{se } x \in K \ \wedge \ y = z^3 + 1 \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+e descritta per esempio dal seguente algoritmo:
+\begin{lstlisting}
+input($x$);
+input($y$);
+$z$ = 0;
+while $z$ <= $y$ {
+    if $y$ = $z^3+1$ then
+        if $\varphi_x(x)\downarrow$ then return $z^7$;
+    $z$ = $z$ + 1;
+}
+\end{lstlisting}
+
+\item $A = \text{\{ } x \ | \ \exists y. \ x = 2y \Rightarrow \varphi_{x \ div \ 2}(x)\downarrow \text{ \}}$
+\\ Per dimostrare che $A$ è R.E., scriviamo per esempio il seguente algoritmo:
+\begin{lstlisting}
+input($x$);
+$y$ = 0;
+while $y$ <= $x$ {
+    if $x$ = $2y$ then
+        if $\varphi_{x/2}(x)\downarrow$ then return 1;
+    $y$ = $y$ + 1;
+}
+return 1;
+\end{lstlisting}
+Notiamo che tale algoritmo restituisce 1 se $V \Rightarrow V$ e anche se $F \Rightarrow V$ o $F \Rightarrow F$, come da definizione di implicazione logica.
+\\ Per dimostrare poi che $K \preceq A$, procediamo come visto nell'esercizio 1.
+
+\item $A = \text{\{ } x \ | \ x \ mod \ 5 = 0 \Rightarrow \varphi_{x \ div \ 5}(x)\downarrow \text{ \}}$
+\\ Per dimostrare che $A$ è R.E., scriviamo per esempio il seguente algoritmo:
+\begin{lstlisting}
+input($x$);
+if $x \ mod \ 5$ = 0 then
+    if $\varphi_{x/5}(x)\downarrow$ then return 1;
+else return 1;
+\end{lstlisting}
+Notiamo che tale algoritmo restituisce 1 se $V \Rightarrow V$ e anche se $F \Rightarrow V$ o $F \Rightarrow F$, come da definizione di implicazione logica.
+\\ Per dimostrare poi che $K \preceq A$, procediamo come visto nell'esercizio 1.
+
+\item $A = \text{\{ } x \text{ t.c. } |W_x| \geq 5 \text{ \}}$
+\\ Per dimostrare che $A$ è R.E. basta lanciare dovetail per generare $W_x$ e tenere un contatore; quindi se trovo 5 input per cui $\varphi_x(y)\downarrow$ allora $x \in A$.
+\\ Per dimostrare che $K \preceq A$ dobbiamo far sì che quando $x \in K$ si ottenga che il dominio di $\psi(x,y)$ abbia cardinalità maggiore o uguale a 5, ovvero ad esempio sia tutto $\mathbb{N}$; d'altra parte quando $x \notin K$ è sufficiente far divergere la funzione in modo da ottenere il dominio vuoto.
+\\ Alla luce di tutte queste considerazioni definiamo la funzione $\psi(x,y)$ come
+\[
+\psi(x,y) =
+\begin{cases}
+1& \hspace{0.5cm} \text{se } x \in K \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+Essendo $K$ un insieme R.E. la definizione di tale funzione è effettiva e dunque essa è parziale ricorsiva.
+
+\item $A = \text{\{ } x \ | \ W_x \nsubseteq \bar{K} \text{ \}}$
+\\ Per dimostrare che $A$ è R.E. basta lanciare dovetail per generare $W_x$; quindi se trovo un $x$ tale per cui $\varphi_x(x)\downarrow$ allora $x \in A$ perché siccome $x \in K = \{ x \ | \ \varphi_x(x)\downarrow \}$, $W_x$ non può essere tutto contenuto in $\bar{K}$.
+\\ Per dimostrare che $K \preceq A$ dobbiamo far sì che quando $x \in K$ si ottenga che il dominio di $\psi(x,y)$ sia tutto $\mathbb{N}$ in quanto $\mathbb{N} \nsubseteq \bar{K}$; d'altra parte quando $x \notin K$ è sufficiente far divergere la funzione in modo da ottenere come dominio l'insieme vuoto (che è contenuto in tutti gli insiemi).
+\\ Alla luce di tutte queste considerazioni definiamo la funzione $\psi(x,y)$ come
+\[
+\psi(x,y) =
+\begin{cases}
+1& \hspace{0.5cm} \text{se } x \in K \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+Essendo $K$ un insieme R.E. la definizione di tale funzione è effettiva e dunque essa è parziale ricorsiva.
+\end{enumerate}
+
+\section{Insiemi produttivi}
+Quelli elencati di seguito sono tutti insiemi produttivi. Inoltre, è presente anche una traccia per la dimostrazione.
+\begin{enumerate}[label=\fbox{\arabic*}]
+\item $A = \text{\{ } x \text{ t.c. } |W_x| = \omega \text{ \}}$
+\\ Per dimostrare che $\bar{K} \preceq A$ dobbiamo far sì che quando $x \in K$ si ottenga che il dominio di $\psi(x,y)$ sia finito, perciò da un certo punto in poi bisogna essere sicuri che la funzione diverga. Notiamo che se decidiamo che $x \in K$ significa che $\varphi_x(x)$ termina e questo avviene sicuramente in un numero finito di passi; possiamo allora pensare di far terminare la funzione solo se tali passi non sono meno di $y$ (questo controllo richiede un'esecuzione finita e quindi è decidibile); in tal modo se $n$ è il numero di passi necessari per dire che $x \in K$, allora il dominio di $\psi(x,y)$ sarà costituito da ogni valore più piccolo di $n$; questo significa che su $n + 1$ la funzione diverge, e quindi riusciamo a negare l'appartenenza ad $A$. D'altra parte se $x \notin K$, il dominio di $\psi(x,y)$ sarà tutto $\mathbb{N}$ (infinito) perché per nessun $n$ si ha che $x \in K$ è deciso in meno di $n$ passi (essendo un fatto falso).		
+\\ Alla luce di tutte queste considerazioni definiamo la funzione $\psi(x,y)$ come
+\[
+\psi(x,y) =
+\begin{cases}
+1& \hspace{0.5cm} \text{se } x \in K \text{ non deciso in meno di $y$ passi} \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+Essendo $K$ un insieme R.E. la definizione di tale funzione è effettiva e dunque essa è parziale ricorsiva.
+
+Consideriamo ora $\bar{A} = \text{\{ } x \text{ t.c. } |W_x| < \omega \text{ \}}$.
+\\ Per dimostrare che $\bar{K} \preceq \bar{A}$ dobbiamo far sì che quando $x \in K$ si ottenga che il dominio di $\psi(x,y)$ sia tutto $\mathbb{N}$ (infinito); d'altra parte quando $x \notin K$ è sufficiente far divergere la funzione in modo da ottenere il dominio vuoto (finito).
+\\ Alla luce di tutte queste considerazioni definiamo la funzione $\psi(x,y)$ come
+\[
+\psi(x,y) =
+\begin{cases}
+1& \hspace{0.5cm} \text{se } x \in K \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+Essendo $K$ un insieme R.E. la definizione di tale funzione è effettiva e dunque essa è parziale ricorsiva.
+
+\item $A = \text{\{ } x \ | \ W_x = \{2\}^{\mathbb{N}} \text{ \}}$
+\\ Riscriviamo $A$ come $A = \text{\{ } x \ | \ W_x = D \text{ \}}$ in quanto la dimostrazione è sempre la stessa, qualunque insieme $D$ si consideri.
+\\ Per dimostrare che $\bar{K} \preceq A$ dobbiamo far sì che quando $x \in \bar{K}$ si ottenga che il dominio di $\psi(x,y)$ sia $D$; un modo per ottenere ciò è quello di far terminare la funzione solo se $y \in D$. Dobbiamo però anche far sì che quando $x \notin \bar{K}$ il dominio non sia $D$, ovvero ad esempio sia tutto $\mathbb{N}$.
+\\ Alla luce di tutte queste considerazioni definiamo la funzione $\psi(x,y)$ come
+\[
+\psi(x,y) =
+\begin{cases}
+1& \hspace{0.5cm} \text{se } x \in K \ \vee \ y \in D \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+Essendo $K$ un insieme R.E. la definizione di tale funzione è effettiva e dunque essa è parziale ricorsiva.
+
+Consideriamo ora $\bar{A} = \text{\{ } x \ | \ W_x \neq D \text{ \}}$.
+\\ Per dimostrare che $\bar{K} \preceq \bar{A}$ dobbiamo far sì che quando $x \in \bar{K}$ si ottenga che il dominio di $\psi(x,y)$ non sia $D$; per ottenere ciò si può fare in modo che il dominio sia vuoto, ovvero che la funzione diverga sempre. Dobbiamo però anche far sì che quando $x \notin \bar{K}$ il dominio sia $D$; un modo per ottenere ciò è quello di far terminare la funzione solo se $y \in D$.
+\\ Alla luce di tutte queste considerazioni definiamo la funzione $\psi(x,y)$ come
+\[
+\psi(x,y) =
+\begin{cases}
+1& \hspace{0.5cm} \text{se } x \in K \ \wedge \ y \in D \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+Essendo $K$ un insieme R.E. la definizione di tale funzione è effettiva e dunque essa è parziale ricorsiva.
+
+\newpage
+\item $A = \text{\{ } x \ | \ W_x \text{ è ricorsivo \}}$
+\\ Per dimostrare che $\bar{K} \preceq A$ dobbiamo far sì che quando $x \in K$ si ottenga che il dominio di $\psi(x,y)$ non sia ricorsivo; un modo per ottenere ciò è quello di far terminare la funzione solo se $y \in K$, in quanto $K$ non è ricorsivo. Dobbiamo però anche far sì che quando $x \notin K$ il dominio sia ricorsivo; per ottenere ciò si può fare in modo che il dominio sia vuoto, ovvero che la funzione diverga sempre.
+\\ Alla luce di tutte queste considerazioni definiamo la funzione $\psi(x,y)$ come
+\[
+\psi(x,y) =
+\begin{cases}
+1& \hspace{0.5cm} \text{se } x \in K \ \wedge \ y \in K \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+Essendo $K$ un insieme R.E. la definizione di tale funzione è effettiva e dunque essa è parziale ricorsiva.
+
+Consideriamo ora $\bar{A} = \text{\{ } x \ | \ W_x \text{ non è ricorsivo \}}$.
+\\ Per dimostrare che $\bar{K} \preceq \bar{A}$ dobbiamo far sì che quando $x \in K$ si ottenga che il dominio di $\psi(x,y)$ sia ricorsivo, ovvero ad esempio sia tutto $\mathbb{N}$. Dobbiamo però anche far sì che quando $x \notin K$ il dominio non sia ricorsivo; un modo per ottenere ciò è quello di far terminare la funzione solo se $y \in K$, in quanto $K$ non è ricorsivo.
+\\ Alla luce di tutte queste considerazioni definiamo la funzione $\psi(x,y)$ come
+\[
+\psi(x,y) =
+\begin{cases}
+1& \hspace{0.5cm} \text{se } x \in K \ \vee \ y \in K \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+Essendo $K$ un insieme R.E. la definizione di tale funzione è effettiva e dunque essa è parziale ricorsiva.
+
+\item $A = \text{\{ } x \ | \ \varphi_x \text{ non crescente} \vee range(\varphi_x) = W_x \text{ \}}$
+\\ Per dimostrare che $\bar{K} \preceq A$ dobbiamo assumere che la funzione $\psi(x,y)$ sia crescente dove è definita (per rendere falsa la prima condizione) e far sì che quando $x \in K$ si ottenga che il range e il dominio di $\psi(x,y)$ siano diversi; per ottenere ciò si può fare in modo che il dominio sia tutto $\mathbb{N}$, mentre il range sia $[1,+\infty]$. Dobbiamo però anche far sì che quando $x \notin K$ il range e il dominio di $\psi(x,y)$ siano uguali; per ottenere ciò è sufficiente far divergere la funzione in modo da ottenere dominio e range vuoti.
+
+Alla luce di tutte queste considerazioni definiamo la funzione $\psi(x,y)$ come
+\[
+\psi(x,y) =
+\begin{cases}
+y+1& \hspace{0.5cm} \text{se } x \in K \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+Essendo $K$ un insieme R.E. la definizione di tale funzione è effettiva e dunque essa è parziale ricorsiva.
+
+\item $A = \text{\{ } g(x) \ | \ W_x \subseteq 2^{\mathbb{N}} \text{ \}}$
+\\ Per dimostrare che $\bar{K} \preceq A$ dobbiamo far sì che quando $x \in K$ si ottenga che il dominio di $\psi(x,y)$ non sia contenuto in $2^{\mathbb{N}}$, ovvero che ad esempio sia il singoletto $\{3\}$; d'altra parte quando $x \notin K$ è sufficiente far divergere la funzione in modo da ottenere come dominio l'insieme vuoto.
+\\ Alla luce di tutte queste considerazioni definiamo la funzione $\psi(x,y)$ come
+\[
+\psi(x,y) =
+\begin{cases}
+1& \hspace{0.5cm} \text{se } x \in K \ \wedge \ y=3 \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+Essendo $K$ un insieme R.E. la definizione di tale funzione è effettiva e dunque essa è parziale ricorsiva.
+
+\item $A = \text{\{ } z \ | \ range(\varphi_x) \subseteq 2\mathbb{N}+1 \wedge z=x+1 \text{ \}}$
+\\ Riscriviamo $A$ come $A = \text{\{ } x+1 \ | \ range(\varphi_x) \subseteq 2\mathbb{N}+1 \text{ \}}$.
+\\ Per dimostrare che $\bar{K} \preceq A$ dobbiamo far sì che quando $x \in K$ si ottenga che il range (insieme dei risultati definiti) di $\psi(x,y)$ non sia contenuto in $2\mathbb{N}+1$, ovvero che ad esempio sia il singoletto $\{2\}$; d'altra parte quando $x \notin K$ è sufficiente far divergere la funzione in modo da ottenere come range l'insieme vuoto (che è contenuto in tutti gli insiemi).
+\\ Alla luce di tutte queste considerazioni definiamo la funzione $\psi(x,y)$ come
+\[
+\psi(x,y) =
+\begin{cases}
+2& \hspace{0.5cm} \text{se } x \in K \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+Essendo $K$ un insieme R.E. la definizione di tale funzione è effettiva e dunque essa è parziale ricorsiva.
+
+\item $A = \text{\{ } x \ | \ W_x \subset K \text{ \}}$
+\\ Per dimostrare che $\bar{K} \preceq A$ dobbiamo far sì che quando $x \in K$ si ottenga che il dominio di $\psi(x,y)$ non sia incluso strettamente in $K$; un modo per ottenere ciò è quello di far terminare la funzione solo se $y \in K$, in quanto $K$ non è incluso strettamente in $K$. Dobbiamo però anche far sì che quando $x \notin K$ il dominio sia incluso strettamente in $K$; per ottenere ciò è sufficiente far divergere la funzione in modo da ottenere come dominio l'insieme vuoto (che è incluso strettamente in $K$).
+\\ Alla luce di tutte queste considerazioni definiamo la funzione $\psi(x,y)$ come
+\[
+\psi(x,y) =
+\begin{cases}
+1& \hspace{0.5cm} \text{se } x \in K \ \wedge \ y \in K \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+Essendo $K$ un insieme R.E. la definizione di tale funzione è effettiva e dunque essa è parziale ricorsiva.
+\end{enumerate}
+
+
+\section{Successioni di insiemi ricorsivi}
+\begin{enumerate}[label=\fbox{\arabic*}]
+\item Definire una successione di insiemi ricorsivi $\{B_n\}_{n \in \mathbb{N}}$ tali che
+\[ A = \text{\{ } x \ | \ \bigcap_{n \in \mathbb{N}} B_n \preceq W_x \text{ \}} \]
+è un insieme ricorsivo.
+\\ Per il teorema di Rice, $A$ può essere $\varnothing$ o $\mathbb{N}$.
+\\ Considerando $A = \varnothing$, possiamo riscriverlo in maniera equivalente come
+\[ A = \text{\{ } x \ | \ \bar{K} \preceq W_x \text{ \}} \]
+Di conseguenza, dobbiamo fare in modo che $\bigcap_{n \in \mathbb{N}} B_n = \bar{K}$ e quindi
+\[ B_n = \text{\{ } x \ | \ \varphi_x(x) \text{ non termina in meno di } n \text{ passi \}} \]
+
+\item Definire una successione di insiemi ricorsivi $\{B_n\}_{n \in \mathbb{N}}$ tali che
+\[ A = \text{\{ } x \ | \ W_x \preceq \bigcup_{n \in \mathbb{N}} B_n \text{ \}} \]
+è un insieme ricorsivo.
+\\ Per il teorema di Rice, $A$ può essere $\varnothing$ o $\mathbb{N}$.
+\\ Considerando $A = \mathbb{N}$, possiamo riscriverlo in maniera equivalente come
+\[ A = \text{\{ } x \ | \ W_x \preceq K \text{ \}} \]
+Di conseguenza, dobbiamo fare in modo che $\bigcup_{n \in \mathbb{N}} B_n = K$ e quindi
+\[ B_n = \text{\{ } x \ | \ \varphi_x(x) \text{ termina in meno di } n \text{ passi \}} \]
+
+\item Definire una successione di insiemi ricorsivi $\{B_n\}_{n \in \mathbb{N}}$ tali che
+\[ A = \text{\{ } x \ | \ \bigcup_{n \in \mathbb{N}} \bar{B_n} \preceq \bar{W_x} \text{ \}} \]
+è un insieme ricorsivo.
+\\ Per il teorema di Rice, $A$ può essere $\varnothing$ o $\mathbb{N}$.
+\\ Considerando $A = \varnothing$, possiamo riscriverlo in maniera equivalente come
+\[ A = \text{\{ } x \ | \ \bar{K} \preceq W_x \text{ \}} = \text{\{ } x \ | \ K \preceq \bar{W_x} \text{ \}} \]
+Di conseguenza, dobbiamo fare in modo che $\bigcup_{n \in \mathbb{N}} \bar{B_n} = K$ e quindi
+\[ B_n = \text{\{ } x \ | \ \varphi_x(x) \text{ non termina in meno di } n \text{ passi \}} \]
+
+\item Definire una successione di insiemi ricorsivi $\{B_n\}_{n \in \mathbb{N}}$ tali che
+\[ A = \text{\{ } x \ | \ \bar{W_x} \preceq \bigcap_{n \in \mathbb{N}} B_n \text{ \}} \]
+è un insieme ricorsivo.
+\\ Per il teorema di Rice, $A$ può essere $\varnothing$ o $\mathbb{N}$.
+\\ Considerando $A = \mathbb{N}$, possiamo riscriverlo in maniera equivalente come
+\[ A = \text{\{ } x \ | \ W_x \preceq K \text{ \}} = \text{\{ } x \ | \ \bar{W_x} \preceq \bar{K} \text{ \}} \]
+Di conseguenza, dobbiamo fare in modo che $\bigcap_{n \in \mathbb{N}} B_n = \bar{K}$ e quindi
+\[ B_n = \text{\{ } x \ | \ \varphi_x(x) \text{ non termina in meno di } n \text{ passi \}} \]
+\end{enumerate}
+
+
+\section{Esercizi di riepilogo sulla II parte}
+Per gli insiemi elencati di seguito è presente la relativa classificazione e anche una traccia per la dimostrazione.
+\begin{enumerate}[label=\fbox{\arabic*}]
+\item $A = \text{\{ } x \ | \ y \in W_x \iff y \ mod \ 7 = 3 \text{ \}}$
+\begin{itemize}
+\item $A = \text{\{ } x \ | \ y \in W_x \iff y \in 7\mathbb{N}+3 \text{ \}} = \text{\{ } x \ | \ W_x = 7\mathbb{N}+3 \text{ \}}$ è produttivo
+\\ Per dimostrare che $\bar{K} \preceq A$, si procede come nell'esercizio 2 della sottosezione relativa agli insiemi produttivi.
+
+\item $\bar{A} = \text{\{ } x \ | \ W_x \neq 7\mathbb{N}+3 \text{ \}}$ è produttivo
+\\ Per dimostrare che $\bar{K} \preceq \bar{A}$, si procede come nell'esercizio 2 della sottosezione relativa agli insiemi produttivi.
+\end{itemize}
+
+\item $A = \bigcap_{n \in \mathbb{N}} W_{\gamma_n}$ con
+\[
+\gamma_n(x) =
+\begin{cases}
+0^{3x} 1^{3x} 0^{3x}& \hspace{0.5cm} \text{se } \varphi_x(4x+3) \text{ non termina in meno di $n$ passi} \\
+\uparrow& \hspace{0.5cm} \text{altrimenti}
+\end{cases}
+\]
+\begin{itemize}
+\item $A = \text{\{ } x \ | \ \forall n. \ x \in W_{\gamma_n} \text{ \}} = \text{\{ } x \ | \ \forall n. \ \varphi_x(4x+3) \text{ non termina in meno}$ $\text{di } n \text{ passi \}} = \text{\{ } x \ | \ \varphi_x(4x+3)\uparrow \text{ \}}$ è produttivo
+\\ Per dimostrare che $\bar{K} \preceq A$, dimostro che $K \preceq \bar{A}$ procedendo come nell'esercizio 1 della sottosezione relativa agli insiemi creativi.
+
+\item $\bar{A} = \text{\{ } x \ | \ \varphi_x(4x+3)\downarrow \text{ \}}$ è R.E. e quindi creativo
+\end{itemize}
+
+\item $A = \text{\{ } x \ | \ W_x = \mathbb{N} \text{ \}}$
+\begin{itemize}
+\item $A$ è produttivo
+\\ Per dimostrare che $\bar{K} \preceq A$, si procede in maniera simile a quanto visto nell'esercizio 1 della sottosezione relativa agli insiemi produttivi.
+
+\item $\bar{A} = \text{\{ } x \ | \ W_x \neq \mathbb{N} \text{ \}}$ è produttivo
+\\ Per dimostrare che $\bar{K} \preceq \bar{A}$, si procede in maniera simile a quanto visto nell'esercizio 1 della sottosezione relativa agli insiemi produttivi.
+\end{itemize}
+
+\item $A_m = \text{\{ } x \text{ t.c. } |W_x| = m \text{ \}}$
+\begin{itemize}
+\item $\bar{A_0} = \text{\{ } x \text{ t.c. } |W_x| \neq 0 \text{ \}}$ è creativo
+\\ Per dimostrare che $K \preceq \bar{A_0}$, si procede in maniera simile a quanto visto nell'esercizio 7 della sottosezione relativa agli insiemi creativi.
+
+\item $A_0 = \text{\{ } x \text{ t.c. } |W_x| = 0 \text{ \}}$ è quindi produttivo
+
+\item $A_m$ con $m \geq 1$ è produttivo
+\\ Per dimostrare che $\bar{K} \preceq A_m$, si procede in maniera simile a quanto visto nell'esercizio 2 della sottosezione relativa agli insiemi produttivi, usando come insieme $D$ un insieme avente cardinalità pari a $m$ (ad esempio $[1,m]$).
+
+\item $\bar{A_m}$ con $m \geq 1$ è produttivo
+\\ Per dimostrare che $\bar{K} \preceq \bar{A_m}$, si procede in maniera simile a quanto visto nell'esercizio 2 della sottosezione relativa agli insiemi produttivi, usando come insieme $D$ un insieme avente cardinalità pari a $m$ (ad esempio $[1,m]$).
+\end{itemize}
+
+
+\item $A = \text{\{ } x \ | \ W_x \neq \bar{K} \Rightarrow W_x = K \text{ \}}$
+\begin{itemize}
+\item Siccome $W_x \neq \bar{K}$ è sempre vera (perché $W_x$ è R.E.), $A = \text{\{ } x \ | \ W_x = K \text{ \}}$ è produttivo
+\\ Per dimostrare che $\bar{K} \preceq A$, si procede come nell'esercizio 2 della sottosezione relativa agli insiemi produttivi.
+
+\item $\bar{A} = \text{\{ } x \ | \ W_x \neq K \text{ \}}$ è produttivo
+\\ Per dimostrare che $\bar{K} \preceq \bar{A}$, si procede come nell'esercizio 2 della sottosezione relativa agli insiemi produttivi.
+\end{itemize}
+
+\item $A_n = \text{\{ } x^n \text{ t.c. } |W_x| = 2^n \text{ \}}$ con $n \geq 1$
+\begin{itemize}
+\item $A_n$ è produttivo
+\\ Per dimostrare che $\bar{K} \preceq A_n$, si procede in maniera simile a quanto visto nell'esercizio 2 della sottosezione relativa agli insiemi produttivi, usando come insieme $D$ un insieme avente cardinalità pari a $2^n$ (ad esempio $[1,2^n]$).
+
+\item $\bar{A_n} = \text{\{ } x^n \text{ t.c. } |W_x| \neq 2^n \text{ \}}$ con $n \geq 1$ è produttivo
+\\ Per dimostrare che $\bar{K} \preceq \bar{A_n}$, si procede in maniera simile a quanto visto nell'esercizio 2 della sottosezione relativa agli insiemi produttivi, usando come insieme $D$ un insieme avente cardinalità pari a $2^n$ (ad esempio $[1,2^n]$).
+\end{itemize}
+
+
+\end{enumerate}
+
+
+\backmatter
+\chapter{Credits}
+Basato sugli appunti delle lezioni del \textit{prof. Roberto Giacobazzi} e sull'eserciziario della \textit{prof.ssa Isabella Mastroeni}
+
+\noindent
+Vedere anche qui: \url{https://github.com/davbianchi/dispense-info-univr/tree/master/triennale/fondamenti-dell'-informatica}
+
+\noindent
+\\
+Repository github: \url{https://github.com/zampierida98/UniVR-informatica} \\
+Indirizzo e-mail: \mail{zampieri.davide@outlook.com}
+
+\end{document}

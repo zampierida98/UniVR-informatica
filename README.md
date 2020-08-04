@@ -12,10 +12,6 @@ Collezione di appunti e materiale di studio per il corso di Laurea triennale in 
 - elaborati per i corsi di *Ingegneria del Software* e *Sistemi Operativi*
 
 `III anno` (A.A. 2019-2020):
-<!--
-- appunti per i corsi di Basi di Dati, Elaborazione di Immagini, Fondamenti (guida agli esercizi), Programmazione Python...
-- riassunti dei corsi di Linguaggi...
--->
-- appunti per i corsi di *IN LAVORAZIONE*
-- riassunti dei corsi di *IN LAVORAZIONE*
+- appunti per i corsi di *Elaborazione di Immagini*, *Fondamenti* (guida agli esercizi), *Laboratorio di Basi di Dati* (trascrizione delle slide), *Programmazione Matlab* e *Programmazione Python*
+- riassunti dei corsi di *Basi di Dati*, *Linguaggi* (*IN ARRIVO*) e *Programmazione e Sicurezza delle Reti*
 - elaborato per il corso di *Linguaggi* su *ANTLR*
