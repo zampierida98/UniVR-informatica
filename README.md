@@ -13,5 +13,5 @@ Collezione di appunti e materiale di studio per il corso di Laurea triennale in 
 
 `III anno` (A.A. 2019-2020):
 - appunti per i corsi di *Elaborazione di Immagini*, *Fondamenti* (guida agli esercizi), *Laboratorio di Basi di Dati* (trascrizione delle slide), *Programmazione Matlab* e *Programmazione Python*
-- riassunti dei corsi di *Basi di Dati*, *Linguaggi* (*IN ARRIVO*) e *Programmazione e Sicurezza delle Reti*
+- riassunti dei corsi di *Basi di Dati*, *Linguaggi* e *Programmazione e Sicurezza delle Reti*
 - elaborato per il corso di *Linguaggi* su *ANTLR*
