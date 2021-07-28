@@ -1,3 +1,7 @@
+# Face mask analysis
+Progetto per l'esame del corso di Fondamenti di Machine Learning
+
+
 ## OPERAZIONI FACOLTATIVE
 Scaricare il dataset da https://www.kaggle.com/ashishjangra27/face-mask-12k-images-dataset e riorganizzare le immagini secondo una struttra di directory del tipo
 ```
