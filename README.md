@@ -1,6 +1,6 @@
 # UniVR-informatica
 
-Appunti e riassunti per i corsi del *CdL in Informatica* e del *CdLM in Ingegneria e scienze informatiche* dell'[Università di Verona](http://www.di.univr.it/).
+Appunti e riassunti per i corsi della *Laurea in Informatica* e della *Laurea Magistrale in Ingegneria e scienze informatiche* dell'[Università di Verona](http://www.di.univr.it/).
 
 ## Contenuto
 
@@ -22,9 +22,7 @@ Appunti e riassunti per i corsi del *CdL in Informatica* e del *CdLM in Ingegner
 
 ### Magistrale
 
-`Magistrale I anno` (A.A. 2020-2021): *IN ARRIVO*
-<!---
-- appunti per i corsi di *Fondamenti di linguaggi di programmazione e specifica* (seconda parte) e...
-- riassunti dei corsi di *Fondamenti di analisi e verifica del software*, *Fondamenti di intelligenza artificiale* e...
-- elaborati per i corsi di 
--->
+`Magistrale I anno` (A.A. 2020-2021):
+- appunti per i corsi di *Fondamenti di linguaggi di programmazione e specifica* (seconda parte) e *Ragionamento Automatico* <!-- *Fondamenti di sicurezza e privacy* -->
+- riassunti dei corsi di *Fondamenti di analisi e verifica del software*, *Fondamenti di intelligenza artificiale* e *Fondamenti di machine learning*
+- progetti per i corsi di *Big Data* (su *Spark*), *Ragionamento Automatico* e *Fondamenti di machine learning*
