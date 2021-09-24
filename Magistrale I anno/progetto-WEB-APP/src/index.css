@@ -1,0 +1,16 @@
+td.centerButton {
+  text-align: center;
+  vertical-align: middle;
+}
+
+a.navLink {
+  color: #004BBD;
+}
+
+td::first-letter {
+  text-transform: uppercase;
+}
+
+input.halfCal {
+  width: 50%;
+}

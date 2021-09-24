@@ -2,7 +2,7 @@
 Progetto per l'esame del corso di Fondamenti di Machine Learning
 
 
-## OPERAZIONI FACOLTATIVE
+## Operazioni facoltative
 Scaricare il dataset da https://www.kaggle.com/ashishjangra27/face-mask-12k-images-dataset e riorganizzare le immagini secondo una struttra di directory del tipo
 ```
 '.\dataset\[test|train|validation]\[with|without]'
@@ -23,7 +23,7 @@ Scaricare il dataset da https://www.kaggle.com/ashishjangra27/face-mask-12k-imag
 	Si occupa inoltre di salvare su file le matrici che rappresentano le varie parti del dataset (train set, validation set, test set) opportunamente caricate tramite la funzione precedente.
 
 
-## ESECUZIONE DEL PROGETTO
+## Esecuzione del progetto
 È possibile eseguire il progetto fin da subito utilizzando i file di dati MATLAB generati appositamente; per far girare il codice basta aprire il file `face_mask_testing.m` in MATLAB oppure eseguire il file `face_mask_testing.py` tramite l'interprete Python
 
 * `train.mat, validation.mat, test.mat`

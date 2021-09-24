@@ -25,4 +25,4 @@ Appunti e riassunti per i corsi della *Laurea in Informatica* e della *Laurea Ma
 `Magistrale I anno` (A.A. 2020-2021):
 - appunti per i corsi di *Fondamenti di linguaggi di programmazione e specifica* (seconda parte) e *Ragionamento Automatico* <!-- *Fondamenti di sicurezza e privacy* -->
 - riassunti dei corsi di *Fondamenti di analisi e verifica del software*, *Fondamenti di intelligenza artificiale* e *Fondamenti di machine learning*
-- progetti per i corsi di *Big Data* (su *Spark*), *Ragionamento Automatico* e *Fondamenti di machine learning*
+- progetti per i corsi di *Big Data* (su *Spark*), *Ragionamento Automatico*, *Fondamenti di machine learning* e *Applicazioni dinamiche per il web* (include appunti per il corso)

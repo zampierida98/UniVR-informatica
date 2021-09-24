@@ -1,3 +1,6 @@
 [submodule "Magistrale I anno/progetto-SPARK/authorship"]
 	path = Magistrale I anno/progetto-SPARK/authorship
 	url = https://github.com/zampierida98/authorship
+[submodule "Magistrale I anno/progetto-WEB-APP/eventi-univr"]
+	path = Magistrale I anno/progetto-WEB-APP/eventi-univr
+	url = https://github.com/zampierida98/eventi-univr
