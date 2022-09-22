@@ -1,12 +1,12 @@
-[submodule "Magistrale I anno/progetto-SPARK/authorship"]
-	path = Magistrale I anno/progetto-SPARK/authorship
-	url = https://github.com/zampierida98/authorship
-[submodule "Magistrale I anno/progetto-WEB-APP/eventi-univr"]
-	path = Magistrale I anno/progetto-WEB-APP/eventi-univr
-	url = https://github.com/zampierida98/eventi-univr
 [submodule "Magistrale/fondamenti-intelligenza-artificiale/anomaly-detection"]
 	path = Magistrale/fondamenti-intelligenza-artificiale/anomaly-detection
 	url = https://github.com/zampierida98/anomaly-detection
 [submodule "Magistrale/progetto-NMR/ExAI-algorithm"]
 	path = Magistrale/progetto-NMR/ExAI-algorithm
 	url = https://github.com/zampierida98/ExAI-algorithm
+[submodule "Magistrale/progetto-SPARK/authorship"]
+	path = Magistrale/progetto-SPARK/authorship
+	url = https://github.com/zampierida98/authorship
+[submodule "Magistrale/progetto-WEB-APP/eventi-univr"]
+	path = Magistrale/progetto-WEB-APP/eventi-univr
+	url = https://github.com/zampierida98/eventi-univr
